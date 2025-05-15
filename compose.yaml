@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=lootlife'
+      - 'POSTGRES_PASSWORD=Borman15'
+      - 'POSTGRES_USER=Postgres'
+    ports:
+      - '5432:5432'
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - lootlife_network
+
+volumes:
+  postgres_data:
+
+networks:
+  lootlife_network:

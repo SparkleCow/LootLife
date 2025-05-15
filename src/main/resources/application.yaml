@@ -1,0 +1,19 @@
+server: 8080
+
+spring:
+  application:
+    name: soundscape
+
+  datasource:
+    username:
+    password:
+    url:
+    driver-class-name:
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+
