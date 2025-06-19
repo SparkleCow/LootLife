@@ -3,10 +3,13 @@ package com.sparklecow.LootLife.services.mappers;
 import com.sparklecow.LootLife.entities.User;
 import com.sparklecow.LootLife.models.user.UserRequestDto;
 import com.sparklecow.LootLife.models.user.UserResponseDto;
+import com.sparklecow.LootLife.models.user.UserUpdateDto;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+import java.time.LocalDate;
+
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
@@ -15,15 +18,16 @@ public interface UserMapper {
     @Mapping(target = "createdAt",     ignore = true)
     @Mapping(target = "lastModifiedAt",ignore = true)
     @Mapping(target = "roles",         ignore = true)
-    User userRequestDtoToUser(UserRequestDto dto);
+    User userRequestDtoToUser(UserRequestDto userRequestDto);
 
+    @Mapping(target = "roles", expression = "java(user.getRoles().stream().map(Role::getName).toList())")
     UserResponseDto toDto(User user);
     /**
-     * Actualiza una entidad existente con valores no nulos del DTO.
+     * This updates an entity with not null values from DTO
      */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id",            ignore = true)
     @Mapping(target = "createdAt",     ignore = true)
     @Mapping(target = "lastModifiedAt",ignore = true)
-    void updateFromDto(UserRequestDto dto, @MappingTarget User entity);
+    void updateFromDto(UserUpdateDto userUpdateDto, @MappingTarget User user);
 }
