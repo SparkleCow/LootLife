@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
@@ -27,7 +29,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> registerUser(@RequestBody @Valid UserRequestDto userRequestDto){
-        authenticationService.registerUser(userRequestDto);
-        return ResponseEntity.created()
+        UserResponseDto userResponseDto = authenticationService.registerUser(userRequestDto);;
+        URI location = URI.create("/users/" + userResponseDto.id());
+        return ResponseEntity.created(location).body(userResponseDto);
     }
 }

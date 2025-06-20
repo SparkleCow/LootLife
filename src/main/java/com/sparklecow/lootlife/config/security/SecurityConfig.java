@@ -1,4 +1,4 @@
-package com.sparklecow.lootlife.config;
+package com.sparklecow.lootlife.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
