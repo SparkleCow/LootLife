@@ -1,13 +1,11 @@
-package com.sparklecow.LootLife.services.mappers;
+package com.sparklecow.lootlife.services.mappers;
 
-import com.sparklecow.LootLife.entities.User;
-import com.sparklecow.LootLife.models.user.UserRequestDto;
-import com.sparklecow.LootLife.models.user.UserResponseDto;
-import com.sparklecow.LootLife.models.user.UserUpdateDto;
+import com.sparklecow.lootlife.entities.User;
+import com.sparklecow.lootlife.models.user.UserRequestDto;
+import com.sparklecow.lootlife.models.user.UserResponseDto;
+import com.sparklecow.lootlife.models.user.UserUpdateDto;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-
-import java.time.LocalDate;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -18,6 +16,7 @@ public interface UserMapper {
     @Mapping(target = "createdAt",     ignore = true)
     @Mapping(target = "lastModifiedAt",ignore = true)
     @Mapping(target = "roles",         ignore = true)
+    @Mapping(target = "password",      ignore = true)
     User userRequestDtoToUser(UserRequestDto userRequestDto);
 
     @Mapping(target = "roles", expression = "java(user.getRoles().stream().map(Role::getName).toList())")

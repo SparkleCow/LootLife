@@ -1,4 +1,4 @@
-package com.sparklecow.LootLife.entities;
+package com.sparklecow.lootlife.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

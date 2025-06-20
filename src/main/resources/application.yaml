@@ -1,6 +1,11 @@
 server: 8080
 
 spring:
+
+  web:
+    servlet:
+      context-path: /api
+
   application:
     name: soundscape
 

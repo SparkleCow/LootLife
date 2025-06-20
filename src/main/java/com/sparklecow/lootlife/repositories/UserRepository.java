@@ -1,6 +1,6 @@
-package com.sparklecow.LootLife.repositories;
+package com.sparklecow.lootlife.repositories;
 
-import com.sparklecow.LootLife.entities.User;
+import com.sparklecow.lootlife.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,9 +1,7 @@
-package com.sparklecow.LootLife.entities;
+package com.sparklecow.lootlife.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.sparklecow.lootlife.models.role.RoleName;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,10 +18,11 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String roleName;
-
+    @Enumerated(EnumType.STRING)
+    @Column(unique = true, nullable = false)
+    private RoleName roleName;
     @Override
     public String getAuthority() {
-        return this.roleName;
+        return this.roleName.name();
     }
 }

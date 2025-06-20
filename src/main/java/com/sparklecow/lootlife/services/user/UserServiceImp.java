@@ -1,36 +1,23 @@
-package com.sparklecow.LootLife.services.user;
+package com.sparklecow.lootlife.services.user;
 
-import com.sparklecow.LootLife.entities.User;
-import com.sparklecow.LootLife.models.user.*;
-import com.sparklecow.LootLife.repositories.RoleRepository;
-import com.sparklecow.LootLife.repositories.UserRepository;
-import com.sparklecow.LootLife.services.mappers.UserMapper;
+import com.sparklecow.lootlife.entities.User;
+import com.sparklecow.lootlife.models.user.*;
+import com.sparklecow.lootlife.repositories.RoleRepository;
+import com.sparklecow.lootlife.repositories.UserRepository;
+import com.sparklecow.lootlife.services.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-
 @Service
 @RequiredArgsConstructor
-public class UserServiceImp implements UserService, AuthenticationService{
+public class UserServiceImp implements UserService{
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
-
-    @Override
-    public void registerUser(UserRequestDto userRequestDto) {
-        User user = userMapper.userRequestDtoToUser(userRequestDto);
-        user.setRoles(new HashSet<>());
-    }
-
-    @Override
-    public String login(UserAuthenticationDto userAuthenticationDto) {
-        return "";
-    }
 
     @Override
     public Page<User> findAllUsers(Pageable pageable) {

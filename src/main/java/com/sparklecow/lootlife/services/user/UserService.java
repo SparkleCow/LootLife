@@ -1,15 +1,16 @@
-package com.sparklecow.LootLife.services.user;
+package com.sparklecow.lootlife.services.user;
 
-import com.sparklecow.LootLife.entities.User;
-import com.sparklecow.LootLife.models.user.UserImagesUpdateDto;
-import com.sparklecow.LootLife.models.user.UserPasswordUpdateDto;
-import com.sparklecow.LootLife.models.user.UserUpdateDto;
-import com.sparklecow.LootLife.models.user.UsernameUpdateDto;
+import com.sparklecow.lootlife.entities.User;
+import com.sparklecow.lootlife.models.user.UserImagesUpdateDto;
+import com.sparklecow.lootlife.models.user.UserPasswordUpdateDto;
+import com.sparklecow.lootlife.models.user.UserUpdateDto;
+import com.sparklecow.lootlife.models.user.UsernameUpdateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 
-public interface UserService {
+public interface UserService
+{
     Page<User> findAllUsers(Pageable pageable);
     Page<User> findUsersByUsername(String username, Pageable pageable);
     User findUserById(Long id);

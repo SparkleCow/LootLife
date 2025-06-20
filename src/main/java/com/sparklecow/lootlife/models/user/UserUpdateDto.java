@@ -1,4 +1,4 @@
-package com.sparklecow.LootLife.models.user;
+package com.sparklecow.lootlife.models.user;
 
 import java.time.LocalDate;
 
