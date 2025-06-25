@@ -1,6 +1,7 @@
 services:
   postgres:
     image: 'postgres:latest'
+    container_name: postgres-lootlife
     environment:
       - 'POSTGRES_DB=lootlife'
       - 'POSTGRES_PASSWORD=Borman15'
@@ -13,8 +14,18 @@ services:
     networks:
       - lootlife_network
 
+  mail-dev:
+    image: maildev/maildev
+    container_name: mail-dev-lootlife
+    ports:
+      - 1025:1025
+      - 1080:1080
+    networks:
+      - lootlife_network
+
 volumes:
   postgres_data:
 
 networks:
   lootlife_network:
+      driver: bridge

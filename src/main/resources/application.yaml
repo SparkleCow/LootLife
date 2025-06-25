@@ -9,6 +9,10 @@ spring:
   application:
     name: soundscape
 
+  servlet:
+    multipart:
+      max-file-size: 50MB
+
   datasource:
     username:
     password:
@@ -21,6 +25,21 @@ spring:
       ddl-auto: create
     properties:
       dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: localhost
+    port: 1025
+    username: sparklecow
+    password: sparklecow
+    properties:
+      smtp:
+        trust: "*"
+      auth: true
+      starttls:
+        enable: true
+      connectiontimeout: 5000
+      timeout: 3000
+      writetimeput: 5000
 
 application:
   security:
