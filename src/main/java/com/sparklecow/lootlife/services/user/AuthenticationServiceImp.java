@@ -1,5 +1,6 @@
 package com.sparklecow.lootlife.services.user;
 
+import com.sparklecow.lootlife.config.jwt.JwtUtils;
 import com.sparklecow.lootlife.entities.Role;
 import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.models.role.RoleName;
@@ -11,6 +12,10 @@ import com.sparklecow.lootlife.repositories.RoleRepository;
 import com.sparklecow.lootlife.repositories.UserRepository;
 import com.sparklecow.lootlife.services.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,8 @@ public class AuthenticationServiceImp implements AuthenticationService{
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
 
     @Override
     public UserResponseDto registerUser(UserRequestDto userRequestDto) {
@@ -46,7 +53,12 @@ public class AuthenticationServiceImp implements AuthenticationService{
     }
 
     @Override
-    public AuthenticationResponseDto login(AuthenticationRequestDto userAuthenticationDto) {
-        return null;
+    public AuthenticationResponseDto login(AuthenticationRequestDto authenticationRequestDto) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                authenticationRequestDto.username(), authenticationRequestDto.password());
+
+        UserDetails userDetails  = (UserDetails) authenticationManager.authenticate(authentication).getPrincipal();
+
+        return new AuthenticationResponseDto(jwtUtils.generateToken(userDetails));
     }
 }
