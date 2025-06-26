@@ -53,6 +53,8 @@ spring:
               - email
               - profile
           github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - read:user
@@ -71,7 +73,7 @@ spring:
 application:
   security:
     jwt:
-      secret_key: 6ed1eb0150e8f8fb285ec976ce500807406933985fbea5086c690eb221e53f5a
+      secret_key: ${SECRET_KEY}
       expiration: 8640000
   mailing:
     activation-url: http://localhost:4200/activate-account

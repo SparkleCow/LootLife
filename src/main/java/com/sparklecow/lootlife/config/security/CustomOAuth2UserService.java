@@ -25,17 +25,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final String githubRegistrationId = "github";
 
+    /*This method receives an OAuth2UserRequest and extract its information*/
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oauth2User = super.loadUser(userRequest);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        String email = oauth2User.getAttribute("email"); // No se ejecuta asi directamente
-        String username = oauth2User.getAttribute("login"); // GitHub: usa "login", Google usa "name"
+        String email = oauth2User.getAttribute("email");
+        String username = oauth2User.getAttribute("login");
 
-        // 🔍 Si GitHub no devuelve el email directamente, obtenlo desde el endpoint de emails
+        //Here we validate if the registrationId is Github.
+        //TODO uses another registrationId such as Google or Facebook
+        String githubRegistrationId = "github";
+        /*In github, if the account is not public, we cant receive the email in a traditional way, we require to do a request
+        * at another github endpoint with the token in order to receive the email*/
         if (email == null && githubRegistrationId.equalsIgnoreCase(registrationId)) {
             String token = userRequest.getAccessToken().getTokenValue();
 
@@ -88,6 +92,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .build();
             userRepository.save(user);
         }
+        //CustomOauth2User is a wrapper that contains oauth2User and user information.
         return new CustomOAuth2User(oauth2User, user);
     }
 }
