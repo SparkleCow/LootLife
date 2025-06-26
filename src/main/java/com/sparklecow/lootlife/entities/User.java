@@ -15,13 +15,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Entity
-//This allows to have creation and update information for this class
-@EntityListeners(AuditingEntityListener.class)
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 public class User implements UserDetails, Principal {
 
@@ -64,6 +64,10 @@ public class User implements UserDetails, Principal {
     private boolean isAccountLocked = false;
 
     private boolean isCredentialsExpired = false;
+
+    private boolean oauth = false;
+
+    private String oauth2Provider;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens = new ArrayList<>();

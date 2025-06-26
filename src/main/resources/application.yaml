@@ -14,10 +14,10 @@ spring:
       max-file-size: 50MB
 
   datasource:
-    username:
-    password:
-    url:
-    driver-class-name:
+    url: jdbc:postgresql://localhost:5432/lootlife
+    username: Postgres
+    password: Borman15
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     show-sql: true
@@ -41,8 +41,37 @@ spring:
       timeout: 3000
       writetimeput: 5000
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: <Google-Key-Id>
+            client-secret: <Google-Secret-Key>
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+          github:
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - read:user
+              - user:email
+
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://www.googleapis.com/oauth2/v4/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+
 application:
   security:
     jwt:
       secret_key: 6ed1eb0150e8f8fb285ec976ce500807406933985fbea5086c690eb221e53f5a
       expiration: 8640000
+  mailing:
+    activation-url: http://localhost:4200/activate-account
