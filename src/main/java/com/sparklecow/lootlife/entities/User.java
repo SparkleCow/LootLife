@@ -37,6 +37,8 @@ public class User implements UserDetails, Principal {
     @Column(name = "last_modified_at", nullable = true, insertable = false)
     private LocalDateTime lastModifiedAt;
 
+    private Integer age;
+
     private String username;
 
     private String firstName;
@@ -50,8 +52,6 @@ public class User implements UserDetails, Principal {
     private String profileImageUrl;
 
     private String bannerImageUrl;
-
-    private Integer age;
 
     private LocalDate birthDate;
 
@@ -79,6 +79,10 @@ public class User implements UserDetails, Principal {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(name = "stats_id")
+    private Stats stats;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
