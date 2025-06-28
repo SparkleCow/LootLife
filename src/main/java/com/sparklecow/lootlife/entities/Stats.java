@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "stats")
+/*This class contains the user stats (Level, Badges, Experience, etc)*/
 public class Stats {
 
     @Id
@@ -46,6 +47,4 @@ public class Stats {
     private Long luckExperience;
 
     private Integer totalMissionsCompleted;
-    private Integer streakDays;
-    private Long timeInvestedMinutes;
 }
