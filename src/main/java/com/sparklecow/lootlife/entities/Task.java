@@ -35,18 +35,28 @@ public class Task {
     @Column(name = "last_modified_at", nullable = true, insertable = false)
     private LocalDateTime lastModifiedAt;
 
-    private LocalDateTime deadLine;
+    private LocalDateTime deadline;
 
-    private boolean isActive = true;
+    private Boolean isExpired;
+
+    private Boolean isActive = true;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "task_stat_categories",
+            joinColumns = @JoinColumn(name = "task_id")
+    )
+    @Column(name = "stat_category")
     @Size(max = 3, message = "A task cannot have more than 3 stat categories")
     private Set<StatType> statsCategories = new HashSet<>();
 
+
+
+    @Column(nullable = false)
     private String title;
 
-    @Column(length = 255)
+    @Column(nullable = false, length = 255)
     private String description;
 
     private Long xpReward;
@@ -57,4 +67,9 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    //Quantitative tasks
+    private Integer progressRequired;
+
+    private Integer currentProgress;
 }

@@ -84,6 +84,9 @@ public class User implements UserDetails, Principal {
     @JoinColumn(name = "stats_id")
     private Stats stats;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Task> tasks;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
