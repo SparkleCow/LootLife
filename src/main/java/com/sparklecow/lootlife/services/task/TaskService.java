@@ -1,6 +1,5 @@
 package com.sparklecow.lootlife.services.task;
 
-import com.sparklecow.lootlife.entities.Task;
 import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.models.task.TaskRequestDto;

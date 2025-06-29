@@ -69,7 +69,6 @@ public class TaskServiceImp implements TaskService {
         task.setIsActive(false);
         task.setIsExpired(false);
 
-        // Si es cuantitativa, marcarla al 100%
         if (task.getProgressRequired() != null) {
             task.setCurrentProgress(task.getProgressRequired());
         }

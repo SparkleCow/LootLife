@@ -4,12 +4,16 @@ import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.models.user.UserRequestDto;
 import com.sparklecow.lootlife.models.user.UserResponseDto;
 import com.sparklecow.lootlife.models.user.UserUpdateDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
+
+    private final StatsMapper statsMapper;
 
     public User userRequestDtoToUser(UserRequestDto dto) {
         if (dto == null) return null;
@@ -20,7 +24,6 @@ public class UserMapper {
         user.setEmail(dto.email());
         user.setAge(dto.age());
         user.setBirthDate(dto.birthDate());
-
         return user;
     }
 
@@ -44,8 +47,8 @@ public class UserMapper {
                 user.getLastModifiedAt(),
                 user.isVerified(),
                 user.isEnabled(),
-                roleNames
-        );
+                roleNames,
+                statsMapper.toResponseDto(user.getStats()));
     }
 
     public void updateFromDto(UserUpdateDto dto, User user) {

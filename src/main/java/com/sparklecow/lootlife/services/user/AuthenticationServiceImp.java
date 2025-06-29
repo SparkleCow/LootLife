@@ -15,6 +15,7 @@ import com.sparklecow.lootlife.repositories.TokenRepository;
 import com.sparklecow.lootlife.repositories.UserRepository;
 import com.sparklecow.lootlife.services.email.EmailService;
 import com.sparklecow.lootlife.services.mappers.UserMapper;
+import com.sparklecow.lootlife.services.stats.StatsService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,7 @@ public class AuthenticationServiceImp implements AuthenticationService, TokenAut
     private final TokenRepository tokenRepository;
     @Value("${application.mailing.activation-url}")
     private String activationUrl;
+    private final StatsService statsService;
 
     @Override
     @Transactional
@@ -60,6 +62,8 @@ public class AuthenticationServiceImp implements AuthenticationService, TokenAut
 
         user.setPassword(passwordEncoder.encode(userRequestDto.password()));
         user.setRoles(Set.of(userRole));
+        user.setStats(statsService.createStats());
+
         UserResponseDto userResponseDto = userMapper.toDto(userRepository.save(user));
         sendValidation(user);
         return userResponseDto;

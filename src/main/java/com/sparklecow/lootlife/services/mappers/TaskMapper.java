@@ -6,7 +6,9 @@ import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.models.task.TaskRequestDto;
 import com.sparklecow.lootlife.models.task.TaskResponseDto;
 import com.sparklecow.lootlife.models.task.TaskUpdateDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TaskMapper {
     /**
      * Converts a taskRequestDto into a Task entity

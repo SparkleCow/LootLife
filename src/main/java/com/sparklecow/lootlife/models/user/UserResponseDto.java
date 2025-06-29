@@ -1,5 +1,7 @@
 package com.sparklecow.lootlife.models.user;
 
+import com.sparklecow.lootlife.models.stats.StatsResponseDto;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +20,7 @@ public record UserResponseDto(
         LocalDateTime lastModifiedAt,
         boolean isVerified,
         boolean isEnabled,
-        List<String> roles
+        List<String> roles,
+        StatsResponseDto stats
 ) {
 }
