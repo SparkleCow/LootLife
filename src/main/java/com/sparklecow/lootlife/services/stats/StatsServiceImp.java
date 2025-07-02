@@ -40,13 +40,20 @@ public class StatsServiceImp implements StatsService{
     }
 
     @Override
-    public Stats addStatExperience(Long experience, UnaryOperator<Stats> statsResolver) {
-        return null;
+    public Stats addStatExperience(Stats stats, UnaryOperator<Stats> statsResolver) {
+        Stats updatedStats = statsResolver.apply(stats);
+        statsRepository.save(updatedStats);
+        return updatedStats;
     }
 
     @Override
     public Stats updateStatLevel(Long level, Long totalExperience, UnaryOperator<Stats> statsResolver) {
         return null;
+    }
+
+    @Override
+    public Long calculateXpToNextStatLevel(Stats stats) {
+        return 0L;
     }
 
     @Override
@@ -62,6 +69,11 @@ public class StatsServiceImp implements StatsService{
 
         }
         return null;
+    }
+
+    @Override
+    public Long calculateXpToNextLevel(Stats stats) {
+        return 0L;
     }
 
     @Override

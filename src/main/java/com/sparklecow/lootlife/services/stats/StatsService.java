@@ -9,7 +9,7 @@ public interface StatsService {
      Stats createStats();
 
      //These methods allow control each stat level and experience
-     Stats addStatExperience(Long experience, UnaryOperator<Stats> statsResolver);
+     Stats addStatExperience(Stats stats, UnaryOperator<Stats> statsResolver);
      Stats updateStatLevel(Long level, Long totalExperience, UnaryOperator<Stats> statsResolver);
      Long calculateXpToNextStatLevel(Stats stats);
 

@@ -80,7 +80,7 @@ public class User implements UserDetails, Principal {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "stats_id")
     private Stats stats;
 

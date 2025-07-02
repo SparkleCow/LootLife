@@ -1,12 +1,16 @@
 package com.sparklecow.lootlife.services.task;
 
+import com.sparklecow.lootlife.entities.Stats;
 import com.sparklecow.lootlife.entities.Task;
 import com.sparklecow.lootlife.entities.User;
+import com.sparklecow.lootlife.models.stats.StatType;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.models.task.TaskRequestDto;
 import com.sparklecow.lootlife.models.task.TaskResponseDto;
 import com.sparklecow.lootlife.models.task.TaskUpdateDto;
+import com.sparklecow.lootlife.repositories.StatsRepository;
 import com.sparklecow.lootlife.repositories.TaskRepository;
+import com.sparklecow.lootlife.repositories.UserRepository;
 import com.sparklecow.lootlife.services.mappers.TaskMapper;
 import com.sparklecow.lootlife.services.stats.StatsService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +27,15 @@ public class TaskServiceImp implements TaskService {
     private final StatsService statsService;
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
+    private final UserRepository userRepository;
+    private final StatsRepository statsRepository;
 
     @Override
     @Transactional
     public TaskResponseDto createTask(User user, TaskRequestDto taskRequestDto) {
-        Task task = taskMapper.toEntity(taskRequestDto, user);
-        user.getTasks().add(task);
+        User persistentUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Task task = taskMapper.toEntity(taskRequestDto, persistentUser);
         taskRepository.save(task);
         return taskMapper.toResponseDto(task);
     }
@@ -40,6 +48,14 @@ public class TaskServiceImp implements TaskService {
     @Override
     public List<TaskResponseDto> findTaskByDifficulty(User user, TaskDifficulty taskDifficulty) {
         return taskRepository.findByTaskDifficultyAndUser(taskDifficulty, user).stream().map(taskMapper::toResponseDto).toList();
+    }
+
+    @Override
+    public TaskResponseDto findTaskByUserAndId(User user, Long id) {
+        User persistentUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<Task> task = persistentUser.getTasks().stream().filter(x -> x.getId().equals(id)).findFirst();
+        return task.map(taskMapper::toResponseDto).orElseThrow(() -> new RuntimeException("Task not found"));
     }
 
     @Override
@@ -61,6 +77,9 @@ public class TaskServiceImp implements TaskService {
     public void completeTask(User user, Long id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("This task does not exist"));
+        User userOpt = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User with id: "+user.getId()+" not found"));
+        Stats userStats = userOpt.getStats();
 
         if (!task.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("This user is not the owner of this task");
@@ -72,6 +91,38 @@ public class TaskServiceImp implements TaskService {
         if (task.getProgressRequired() != null) {
             task.setCurrentProgress(task.getProgressRequired());
         }
+
+        statsService.addStatExperience(userStats,
+                stats -> {
+                    for (StatType statType : task.getStatsCategories()) {
+                        switch (statType) {
+                            case STRENGTH -> stats.setStrengthExperience(
+                                    stats.getStrengthExperience() + task.getXpReward()
+                            );
+                            case INTELLIGENCE -> stats.setIntelligenceExperience(
+                                    stats.getIntelligenceExperience() + task.getXpReward()
+                            );
+                            case WISDOM -> stats.setWisdomExperience(
+                                    stats.getWisdomExperience() + task.getXpReward()
+                            );
+                            case CHARISMA -> stats.setCharismaExperience(
+                                    stats.getCharismaExperience() + task.getXpReward()
+                            );
+                            case DEXTERITY -> stats.setDexterityExperience(
+                                    stats.getDexterityExperience() + task.getXpReward()
+                            );
+                            case CONSTITUTION -> stats.setConstitutionExperience(
+                                    stats.getConstitutionExperience() + task.getXpReward()
+                            );
+                            case LUCK -> stats.setLuckExperience(
+                                    stats.getLuckExperience() + task.getXpReward()
+                            );
+                            default -> throw new IllegalArgumentException("Unknown stat type: " + statType);
+                        }
+                    }
+                    return stats;
+                }
+        );
 
         taskRepository.save(task);
     }

@@ -51,8 +51,6 @@ public class Task {
     @Size(max = 3, message = "A task cannot have more than 3 stat categories")
     private Set<StatType> statsCategories = new HashSet<>();
 
-
-
     @Column(nullable = false)
     private String title;
 

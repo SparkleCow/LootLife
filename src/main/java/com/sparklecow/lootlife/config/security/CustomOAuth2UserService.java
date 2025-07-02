@@ -3,6 +3,7 @@ package com.sparklecow.lootlife.config.security;
 import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.models.user.CustomOAuth2User;
 import com.sparklecow.lootlife.repositories.UserRepository;
+import com.sparklecow.lootlife.services.stats.StatsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +12,7 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
 
@@ -19,12 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StatsService statsService;
 
     /*This method receives an OAuth2UserRequest and extract its information*/
     @Override
@@ -38,8 +40,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         //Here we validate if the registrationId is Github.
         //TODO uses another registrationId such as Google or Facebook
         String githubRegistrationId = "github";
-        /*In github, if the account is not public, we cant receive the email in a traditional way, we require to do a request
-        * at another github endpoint with the token in order to receive the email*/
+        /*In Github, if the account is not public, we cant receive the email in a traditional way, we require to do a request
+        * at another Github endpoint with the token in order to receive the email*/
         if (email == null && githubRegistrationId.equalsIgnoreCase(registrationId)) {
             String token = userRequest.getAccessToken().getTokenValue();
 
@@ -89,6 +91,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .oauth2Provider(registrationId)
                     .isEnabled(true)
                     .isVerified(true)
+                    .stats(statsService.createStats())
                     .build();
             userRepository.save(user);
         }

@@ -12,6 +12,7 @@ public interface TaskService {
     TaskResponseDto createTask(User user, TaskRequestDto taskRequestDto);
     List<TaskResponseDto> findTaskByUser(User user);
     List<TaskResponseDto> findTaskByDifficulty(User user, TaskDifficulty taskDifficulty);
+    TaskResponseDto findTaskByUserAndId(User user, Long id);
     TaskResponseDto updateTask(User user, Long id, TaskUpdateDto taskUpdateDto);
     void completeTask(User user, Long id);
     void deleteTask(User user, Long id);
