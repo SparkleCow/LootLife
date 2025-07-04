@@ -57,12 +57,6 @@ public class StatsServiceImp implements StatsService{
     }
 
     @Override
-    public Stats calculateLevel(Stats stats) {
-        Integer level = stats.getLevel();
-        return null;
-    }
-
-    @Override
     public Stats addLevelExperience(Stats stats, Long experience) {
         Integer level = stats.getLevel();
         if(level==0){
@@ -72,8 +66,37 @@ public class StatsServiceImp implements StatsService{
     }
 
     @Override
+    public Stats calculateLevel(Stats stats) {
+        Integer level = stats.getLevel();
+        Long totalExperience = stats.getExperiencePoints();
+
+        while (true) {
+            long xpForNextLevel = (level == 0)
+                    ? 100L
+                    : 100L * (1L << level); //It calculates xp in an exponential way
+
+            if (totalExperience >= xpForNextLevel) {
+                totalExperience -= xpForNextLevel;
+                level++;
+            } else {
+                break;
+            }
+        }
+
+        stats.setLevel(level);
+        stats.setExperiencePoints(totalExperience);
+        return stats;
+    }
+
+    @Override
     public Long calculateXpToNextLevel(Stats stats) {
-        return 0L;
+        if(stats.getLevel()==0){
+            return 100L;
+        }
+        Integer level = stats.getLevel();
+        Long totalExperience = stats.getExperiencePoints();
+        Long experienceForNextLevel = (long) (100 * Math.pow(2, level));
+        return experienceForNextLevel - totalExperience;
     }
 
     @Override
