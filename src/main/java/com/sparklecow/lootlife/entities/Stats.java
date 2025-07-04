@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "stats")
-/*This class contains the user stats (Level, Badges, Experience, etc)*/
+/*This class contains the user stats (Level, Badges, Experience, etc.)*/
 public class Stats {
 
     @Id
@@ -39,24 +39,31 @@ public class Stats {
     // Stats with individual levels
     private Integer strengthLevel = 0;
     private Long strengthExperience = 0L;
+    private Long strengthNextLevelAt = 0L;
 
     private Integer intelligenceLevel = 0;
     private Long intelligenceExperience = 0L;
+    private Long intelligenceNextLevelAt = 0L;
 
     private Integer wisdomLevel = 0;
     private Long wisdomExperience = 0L;
+    private Long wisdomNextLevelAt = 0L;
 
     private Integer charismaLevel = 0;
     private Long charismaExperience = 0L;
+    private Long charismaNextLevelAt = 0L;
 
     private Integer dexterityLevel = 0;
     private Long dexterityExperience = 0L;
+    private Long dexterityNextLevelAt = 0L;
 
     private Integer constitutionLevel = 0;
     private Long constitutionExperience = 0L;
+    private Long constitutionNextLevelAt = 0L;
 
     private Integer luckLevel = 0;
     private Long luckExperience = 0L;
+    private Long luckNextLevelAt = 0L;
 
     private Integer totalMissionsCompleted = 0;
 }
