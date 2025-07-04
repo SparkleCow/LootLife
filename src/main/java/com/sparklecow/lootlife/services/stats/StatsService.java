@@ -3,7 +3,6 @@ package com.sparklecow.lootlife.services.stats;
 import com.sparklecow.lootlife.entities.Stats;
 import com.sparklecow.lootlife.models.stats.StatType;
 
-import java.util.function.UnaryOperator;
 
 public interface StatsService {
 
@@ -31,18 +30,6 @@ public interface StatsService {
 
 
      // Individual stat methods
-
-     /**
-      * Adds experience to specific stats using a lambda resolver.
-      * This also triggers level-up logic for any stat that exceeds the XP required.
-      */
-     Stats addStatExperience(Stats stats, UnaryOperator<Stats> statsResolver);
-
-     /**
-      * Calculates how many XP points are required to reach the next level
-      * for the given stat type.
-      */
-     Long calculateXpToNextStatLevel(Stats stats, StatType statType);
 
      /**
       * Adds experience to a specific stat and updates its level if necessary.

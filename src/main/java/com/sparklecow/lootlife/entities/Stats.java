@@ -32,38 +32,38 @@ public class Stats {
     private LocalDateTime lastModifiedAt;
 
     //General level
-    private Integer level = 0;
-    private Long experiencePoints = 0L;
-    private Long nextLevelAt = 0L;
+    private Integer level;
+    private Long experiencePoints;
+    private Long nextLevelAt;
 
     // Stats with individual levels
-    private Integer strengthLevel = 0;
-    private Long strengthExperience = 0L;
-    private Long strengthNextLevelAt = 0L;
+    private Integer strengthLevel;
+    private Long strengthExperience;
+    private Long strengthNextLevelAt;
 
-    private Integer intelligenceLevel = 0;
-    private Long intelligenceExperience = 0L;
-    private Long intelligenceNextLevelAt = 0L;
+    private Integer intelligenceLevel;
+    private Long intelligenceExperience;
+    private Long intelligenceNextLevelAt;
 
-    private Integer wisdomLevel = 0;
-    private Long wisdomExperience = 0L;
-    private Long wisdomNextLevelAt = 0L;
+    private Integer wisdomLevel;
+    private Long wisdomExperience;
+    private Long wisdomNextLevelAt;
 
-    private Integer charismaLevel = 0;
-    private Long charismaExperience = 0L;
-    private Long charismaNextLevelAt = 0L;
+    private Integer charismaLevel;
+    private Long charismaExperience;
+    private Long charismaNextLevelAt;
 
-    private Integer dexterityLevel = 0;
-    private Long dexterityExperience = 0L;
-    private Long dexterityNextLevelAt = 0L;
+    private Integer dexterityLevel;
+    private Long dexterityExperience;
+    private Long dexterityNextLevelAt;
 
-    private Integer constitutionLevel = 0;
-    private Long constitutionExperience = 0L;
-    private Long constitutionNextLevelAt = 0L;
+    private Integer constitutionLevel;
+    private Long constitutionExperience;
+    private Long constitutionNextLevelAt;
 
-    private Integer luckLevel = 0;
-    private Long luckExperience = 0L;
-    private Long luckNextLevelAt = 0L;
+    private Integer luckLevel;
+    private Long luckExperience;
+    private Long luckNextLevelAt;
 
-    private Integer totalMissionsCompleted = 0;
+    private Integer totalMissionsCompleted;
 }

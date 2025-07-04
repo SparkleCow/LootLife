@@ -76,14 +76,16 @@ public class TaskServiceImp implements TaskService {
     public void completeTask(User user, Long id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("This task does not exist"));
-        //It uses a user from a new hibernate session.
+
+        // Load a fresh user from the DB
         User userOpt = userRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("User with id: "+user.getId()+" not found"));
-        Stats userStats = userOpt.getStats();
+                .orElseThrow(() -> new RuntimeException("User with id: " + user.getId() + " not found"));
 
         if (!task.getUser().getId().equals(userOpt.getId())) {
             throw new RuntimeException("This user is not the owner of this task");
         }
+
+        Stats userStats = userOpt.getStats();
 
         task.setIsActive(false);
         task.setIsExpired(false);
@@ -92,38 +94,10 @@ public class TaskServiceImp implements TaskService {
             task.setCurrentProgress(task.getProgressRequired());
         }
 
-        //It saves the stats in the addStatExperience method. Here we are only sending a lambda. (UnaryOperator)
-        statsService.addStatExperience(userStats,
-                stats -> {
-                    for (StatType statType : task.getStatsCategories()) {
-                        switch (statType) {
-                            case STRENGTH -> stats.setStrengthExperience(
-                                    stats.getStrengthExperience() + task.getXpReward()
-                            );
-                            case INTELLIGENCE -> stats.setIntelligenceExperience(
-                                    stats.getIntelligenceExperience() + task.getXpReward()
-                            );
-                            case WISDOM -> stats.setWisdomExperience(
-                                    stats.getWisdomExperience() + task.getXpReward()
-                            );
-                            case CHARISMA -> stats.setCharismaExperience(
-                                    stats.getCharismaExperience() + task.getXpReward()
-                            );
-                            case DEXTERITY -> stats.setDexterityExperience(
-                                    stats.getDexterityExperience() + task.getXpReward()
-                            );
-                            case CONSTITUTION -> stats.setConstitutionExperience(
-                                    stats.getConstitutionExperience() + task.getXpReward()
-                            );
-                            case LUCK -> stats.setLuckExperience(
-                                    stats.getLuckExperience() + task.getXpReward()
-                            );
-                            default -> throw new IllegalArgumentException("Unknown stat type: " + statType);
-                        }
-                    }
-                    return stats;
-                }
-        );
+        for (StatType statType : task.getStatsCategories()) {
+            statsService.addExperienceToSingleStat(userStats, statType, task.getXpReward());
+        }
+
         taskRepository.save(task);
     }
 
