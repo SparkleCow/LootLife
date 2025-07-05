@@ -37,6 +37,8 @@ feel like playing a role-playing game
 
 - Maven → Dependency management and build tool
 
+- Angular
+
 ## Core Entity Relationships
 
 ![image](https://github.com/user-attachments/assets/13851ea6-f29d-442e-8653-d2bb47876785)
