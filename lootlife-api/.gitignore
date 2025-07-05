@@ -1,0 +1,21 @@
+# Maven
+.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Build output
+/target
+/build
+
+# Spring config
+.env
+*.properties.local
+
+# IDEs
+/.idea
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
