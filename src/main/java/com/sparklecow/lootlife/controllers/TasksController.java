@@ -17,13 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/task")
 @CrossOrigin("*")
-public class TaskController {
+public class TasksController {
 
     private final TaskService taskService;
 
     @PostMapping
     public ResponseEntity<TaskResponseDto> createTask(Authentication authentication, @RequestBody @Valid TaskRequestDto taskRequestDto){
         return ResponseEntity.ok(taskService.createTask((User) authentication.getPrincipal(), taskRequestDto));
+    }
+
+    @PostMapping("/complete/{id}")
+    public ResponseEntity<Void> completeTask(Authentication authentication, @PathVariable Long id){
+        taskService.completeTask((User) authentication.getPrincipal(), id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping

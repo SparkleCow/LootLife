@@ -29,6 +29,7 @@ public class TaskServiceImp implements TaskService {
     private final TaskMapper taskMapper;
     private final UserRepository userRepository;
     private final StatsRepository statsRepository;
+    private static final Long BASE_EXPERIENCE = 10L;
 
     @Override
     @Transactional
@@ -97,7 +98,8 @@ public class TaskServiceImp implements TaskService {
         for (StatType statType : task.getStatsCategories()) {
             statsService.addExperienceToSingleStat(userStats, statType, task.getXpReward());
         }
-
+        /*This adds general experience. This experience is a constant in every task.*/
+        statsService.addLevelExperience(userStats, BASE_EXPERIENCE);
         taskRepository.save(task);
     }
 

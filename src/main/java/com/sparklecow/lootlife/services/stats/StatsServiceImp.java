@@ -1,8 +1,11 @@
 package com.sparklecow.lootlife.services.stats;
 
 import com.sparklecow.lootlife.entities.Stats;
+import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.models.stats.StatType;
+import com.sparklecow.lootlife.models.stats.StatsResponseDto;
 import com.sparklecow.lootlife.repositories.StatsRepository;
+import com.sparklecow.lootlife.services.mappers.StatsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import java.util.function.UnaryOperator;
 public class StatsServiceImp implements StatsService{
 
     private final StatsRepository statsRepository;
+    private final StatsMapper statsMapper;
     private static final long EXPERIENCE_FIRST_LEVEL = 100L;
 
     @Override
@@ -54,6 +58,14 @@ public class StatsServiceImp implements StatsService{
                         .totalMissionsCompleted(0)
                         .build()
         );
+    }
+
+    @Override
+    public StatsResponseDto findStatsByUser(User user) {
+        Long statsId = user.getStats().getId();
+        Stats stats = statsRepository.findById(statsId)
+                .orElseThrow(() -> new RuntimeException("Stats not found for id: " + statsId));
+        return statsMapper.toResponseDto(stats);
     }
 
     @Override

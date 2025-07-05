@@ -1,13 +1,17 @@
 package com.sparklecow.lootlife.services.stats;
 
 import com.sparklecow.lootlife.entities.Stats;
+import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.models.stats.StatType;
-
+import com.sparklecow.lootlife.models.stats.StatsResponseDto;
 
 public interface StatsService {
 
      // Create a blank stats entity
      Stats createStats();
+
+     // Find stats by user
+     StatsResponseDto findStatsByUser(User user);
 
      // General level methods
 
