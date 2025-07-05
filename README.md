@@ -11,6 +11,32 @@ feel like playing a role-playing game
 - Task Difficulty Scaling: Tasks have different difficulty levels that affect XP rewards
 - Mission Completion Tracking: Comprehensive statistics on completed tasks
 
+## Technologies Used in LootLife
+
+- Java 21 → Application runtime environment
+
+- Spring Boot 3.4.5 → Application framework and dependency injection
+
+- PostgreSQL → Primary data persistence
+
+- Spring Data JPA → Object-relational mapping (ORM)
+
+- Spring Security 6.x → Authentication and authorization
+
+- Spring OAuth2 Client → External authentication providers
+
+- JJWT 0.12.6 → JSON Web Token handling
+
+- MapStruct 1.6.3 → DTO to entity conversion
+
+- Lombok 1.18.32 → Boilerplate code reduction
+
+- Spring Mail → Email notifications
+
+- Thymeleaf → HTML template rendering
+
+- Maven → Dependency management and build tool
+
 ## Core Entity Relationships
 
 ![image](https://github.com/user-attachments/assets/13851ea6-f29d-442e-8653-d2bb47876785)
