@@ -8,7 +8,6 @@ import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.models.task.TaskRequestDto;
 import com.sparklecow.lootlife.models.task.TaskResponseDto;
 import com.sparklecow.lootlife.models.task.TaskUpdateDto;
-import com.sparklecow.lootlife.repositories.StatsRepository;
 import com.sparklecow.lootlife.repositories.TaskRepository;
 import com.sparklecow.lootlife.repositories.UserRepository;
 import com.sparklecow.lootlife.services.mappers.TaskMapper;
@@ -28,7 +27,6 @@ public class TaskServiceImp implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
     private final UserRepository userRepository;
-    private final StatsRepository statsRepository;
     private static final Long BASE_EXPERIENCE = 10L;
 
     @Override
