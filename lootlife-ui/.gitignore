@@ -1,0 +1,15 @@
+# Angular output
+/dist
+/tmp
+/out-tsc
+/.angular/cache
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs
+.vscode/
+.idea/
+.history/
