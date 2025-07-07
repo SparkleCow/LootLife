@@ -8,5 +8,8 @@ import { WindowComponent } from "../../shared/window/window.component";
   styleUrl: './main.component.css'
 })
 export class MainComponent {
-  public dynamicGifUrl:string = "/window1.gif";
+  //TODO implement a conection with an API that allows us get gifs with a trigger every 2 hours
+  public dynamicGifUrl1:string = "/window1.gif";
+  public dynamicGifUrl2:string = "/vaporwave.gif";
+  public dynamicGifUrl3:string = "/missions.gif";
 }

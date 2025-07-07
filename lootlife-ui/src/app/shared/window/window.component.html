@@ -1,7 +1,7 @@
 <div class="window">
-  <header class="title-bar">
+  <header class="title-bar" (mousedown)="onMouseDown($event)">
     <div class="title-bar-text">
-          <p>Welcome!</p>
+      <p>Welcome!</p>
     </div>
     <div class="title-bar-controls">
       <button aria-label="Minimize"></button>
@@ -10,6 +10,6 @@
     </div>
   </header>
   <main class="window-body">
-    <img [src]="imageRoute()" alt="Contenido de la ventana"/>
+    <img [src]="imageRoute()" alt="Contenido de la ventana" />
   </main>
 </div>

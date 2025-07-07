@@ -1,5 +1,19 @@
 <div class="main-container">
-      <app-window [imageRoute]="dynamicGifUrl"></app-window>
-  <app-window></app-window>
-  <app-window></app-window>
+  <app-window
+    [imageRoute]="dynamicGifUrl1"
+    [startLeft]="100"
+    [startTop]="000">
+  </app-window>
+
+  <app-window
+    [imageRoute]="dynamicGifUrl2"
+    [startLeft]="400"
+    [startTop]="300">
+  </app-window>
+
+  <app-window
+    [imageRoute]="dynamicGifUrl3"
+    [startLeft]="800"
+    [startTop]="000">
+  </app-window>
 </div>
