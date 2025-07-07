@@ -1,0 +1,62 @@
+.home-container{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  background-image: url('/backgroundMain.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.menu{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 95vh;
+  width: 20vw;
+  margin:20px;
+  background-color: rgba(131, 33, 121, 0.95);
+  border: 5px outset rgba(152, 44, 141, 0.95);
+}
+
+.vaporwave-gif{
+  height: 20%;
+  width: 80%;
+  background-color: aliceblue;
+  /*offset x, offset y, blur radius, color*/
+  box-shadow: 5px -8px 5px rgb(102, 32, 81);
+}
+
+.profile-image{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  /*offset x, offset y, blur radius, color*/
+  box-shadow: 10px -8px 5px rgb(102, 32, 81);
+}
+
+ul{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*Transition for hover*/
+  transition: transform 0.5s ease;
+}
+
+ul img{
+  width: 50px;
+  height: 50px;
+}
+
+ul:hover{
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.main-content{
+  flex-grow: 1;
+  padding: 2rem;
+}

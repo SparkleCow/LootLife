@@ -1,12 +1,16 @@
-<aside>
-  <ul>Loguearse</ul>
-  <ul>Registrarse</ul>
-  <ul>Tareas</ul>
-  <ul>Misiones</ul>
-  <ul>Cuenta</ul>
-  <h1 class="text-3xl font-bold">
-    Hello world!
-  </h1>
-</aside>
+<div class="home-container">
+  <aside class="menu">
+    <ul><img src="/login.png"/>Loguearse</ul>
+    <ul><img src="/register.png"/>Registrarse</ul>
+    <ul><img src="/task.png"/>Tareas</ul>
+    <ul><img src="/missions.gif"/>Misiones</ul>
+    <ul><img src="/account2.gif"/>Cuenta</ul>
+    <img src="/vaporwave.gif" alt="Gif vaporwave" class="vaporwave-gif">
+    <img src="/images.jpeg" alt="Gif vaporwave" class="profile-image">
+  </aside>
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
 
-<router-outlet />
+
