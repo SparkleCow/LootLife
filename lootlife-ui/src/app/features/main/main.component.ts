@@ -8,5 +8,5 @@ import { WindowComponent } from "../../shared/window/window.component";
   styleUrl: './main.component.css'
 })
 export class MainComponent {
-
+  public dynamicGifUrl:string = "/window1.gif";
 }
