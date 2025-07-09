@@ -110,7 +110,6 @@ public class TaskServiceImp implements TaskService {
         if (!task.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("This user is not the owner of this task");
         }
-
         taskRepository.delete(task);
     }
 }
