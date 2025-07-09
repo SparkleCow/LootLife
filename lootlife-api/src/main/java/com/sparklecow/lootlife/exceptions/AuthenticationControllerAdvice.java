@@ -2,6 +2,7 @@ package com.sparklecow.lootlife.exceptions;
 
 import com.sparklecow.lootlife.controllers.AuthController;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(assignableTypes = AuthController.class)
 public class AuthenticationControllerAdvice {
 
-    @ExceptionHandler(MessagingException.class)
-    public ResponseEntity<ExceptionResponse> handleMessagingException(MessagingException e){
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleMessagingException(EmailAlreadyExistsException e){
         return ResponseEntity
                 .status(MESSAGE_ERROR.getHttpStatus())
                 .body(ExceptionResponse.builder()
