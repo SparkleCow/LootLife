@@ -6,11 +6,9 @@ public enum BusinessErrorCodes {
 
     NO_CODE(0, HttpStatus.NOT_IMPLEMENTED, "No code"),
 
-    //Bad request
     VALIDATION_ERROR(400, HttpStatus.BAD_REQUEST, "Validation error"),
     TOKEN_ALREADY_VALIDATE(400, HttpStatus.BAD_REQUEST, "Token has been validate before"),
 
-    //Unauthorized
     BAD_CREDENTIALS(401, HttpStatus.UNAUTHORIZED, "Email / password is incorrect"),
     TOKEN_EXPIRED(401, HttpStatus.UNAUTHORIZED, "Token expired"),
     TOKEN_INVALID(401, HttpStatus.UNAUTHORIZED, "Invalid token"),

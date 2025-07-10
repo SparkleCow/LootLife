@@ -14,16 +14,17 @@ import { Component, HostListener, Input, input, OnInit } from '@angular/core';
   }})
 
 export class WindowComponent implements OnInit {
+
   imageRoute = input<string>('');
-  @Input() startLeft = 0;
-  @Input() startTop = 0;
+  @Input() startLeft:number = 0;
+  @Input() startTop:number = 0;
 
-  posX = 0;
-  posY = 0;
+  posX:number = 0;
+  posY:number = 0;
 
-  dragging = false;
-  offsetX = 0;
-  offsetY = 0;
+  dragging:boolean = false;
+  offsetX:number = 0;
+  offsetY:number = 0;
 
   ngOnInit(): void {
     this.posX = this.startLeft;

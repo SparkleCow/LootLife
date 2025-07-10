@@ -12,4 +12,6 @@ export class MainComponent {
   public dynamicGifUrl1:string = "/window1.gif";
   public dynamicGifUrl2:string = "/vaporwave.gif";
   public dynamicGifUrl3:string = "/missions.gif";
+  public dynamicGifUrl4:string = "/internet.gif";
+
 }
