@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +9,14 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'lootlife-ui';
+
+  constructor(private router:Router){}
+
+  redirectAtLogin(){
+    this.router.navigate(['/auth/login']);
+  }
+
+  redirectAtRegister(){
+    this.router.navigate(['/auth/register']);
+  }
 }
