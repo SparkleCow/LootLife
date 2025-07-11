@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { WindowComponent } from '../../../shared/window/window.component';
 
 @Component({
   selector: 'app-login',
@@ -8,6 +10,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterLink,
+    WindowComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
