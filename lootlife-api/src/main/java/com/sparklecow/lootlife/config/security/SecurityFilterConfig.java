@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,6 +43,8 @@ public class SecurityFilterConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/*").permitAll()
                         .requestMatchers("/task/*").authenticated()
+                        .requestMatchers("/oauth2/authorization/*").permitAll()
+                        .requestMatchers("/oauth-success").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
@@ -70,6 +73,26 @@ public class SecurityFilterConfig {
                             new ObjectMapper().writeValue(response.getWriter(), errorResponse);
                         })
                 )
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Código 401
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            Map<String, Object> errorDetails = new HashMap<>();
+                            errorDetails.put("message", "Acceso no autorizado. Por favor inicie sesión o use OAuth2.");
+                            errorDetails.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+                            new ObjectMapper().writeValue(response.getWriter(), errorDetails);
+                        })
+                        // Este handler se usa cuando un usuario AUTENTICADO NO tiene permisos para un recurso (403)
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // Código 403
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            Map<String, Object> errorDetails = new HashMap<>();
+                            errorDetails.put("message", "Acceso denegado. No tiene los permisos necesarios.");
+                            errorDetails.put("status", HttpServletResponse.SC_FORBIDDEN);
+                            new ObjectMapper().writeValue(response.getWriter(), errorDetails);
+                        })
+                )
+                .formLogin(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider)
                 .build();
     }

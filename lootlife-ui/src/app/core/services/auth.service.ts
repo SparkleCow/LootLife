@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UserRequest } from '../../models/user-request-dto.model';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthResponse } from '../../models/auth-response.model';
+import { LoginRequest } from '../../models/login-request-dto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { AuthResponse } from '../../models/auth-response.model';
 export class AuthService {
 
   private baseUrl: string = 'http://localhost:8080/auth'
+  private AUTH_TOKEN_KEY = 'authToken';
 
   constructor(private http:HttpClient) {}
 
@@ -61,7 +63,19 @@ export class AuthService {
       );
   }
 
-  $loginUser(){}
+  $loginUser(userLoginRequest:LoginRequest): Observable<AuthResponse>{
+    const url = `${this.baseUrl}/login`;
+    return this.http.post<AuthResponse>(url, userLoginRequest)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   $validateToken(){}
+
+  saveToken(authResponse: AuthResponse){
+    const token = authResponse.token;
+    localStorage.setItem("AUTH_TOKEN_KEY", token);
+  }
+
 }

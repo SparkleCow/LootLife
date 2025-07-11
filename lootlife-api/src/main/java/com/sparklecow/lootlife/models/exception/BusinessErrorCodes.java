@@ -1,13 +1,17 @@
 package com.sparklecow.lootlife.models.exception;
 
+import lombok.Getter;
+
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum BusinessErrorCodes {
 
     NO_CODE(0, HttpStatus.NOT_IMPLEMENTED, "No code"),
 
     VALIDATION_ERROR(400, HttpStatus.BAD_REQUEST, "Validation error"),
     TOKEN_ALREADY_VALIDATE(400, HttpStatus.BAD_REQUEST, "Token has been validate before"),
+    EMAIL_ALREADY_EXIST(400, HttpStatus.BAD_REQUEST, "Email already has been used"),
 
     BAD_CREDENTIALS(401, HttpStatus.UNAUTHORIZED, "Email / password is incorrect"),
     TOKEN_EXPIRED(401, HttpStatus.UNAUTHORIZED, "Token expired"),
