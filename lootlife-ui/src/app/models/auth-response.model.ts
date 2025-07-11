@@ -1,3 +1,3 @@
-public interface AuthResponse{
+export interface AuthResponse{
 
 }
