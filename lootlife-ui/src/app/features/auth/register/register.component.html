@@ -2,78 +2,86 @@
   <app-window
   [imageRoute]="'/register.gif'">
     <div class="register-form-container">
-  <h3 class="register-title">Registrarse</h3>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="username">Username:</label>
-      <input id="username" type="text" formControlName="username">
-      <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="error-message">
-        <ng-container *ngIf="registerForm.get('username')?.errors?.['required']">Username es requerido.</ng-container>
-        <ng-container *ngIf="registerForm.get('username')?.errors?.['minlength'] || registerForm.get('username')?.errors?.['maxlength']">
-          Username debe tener entre 3 y 20 caracteres.
-        </ng-container>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="firstName">Nombres:</label>
-      <input id="firstName" type="text" formControlName="firstName">
-      <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="error-message">
-        <ng-container *ngIf="registerForm.get('firstName')?.errors?.['required']">Nombre es requerido.</ng-container>
-        <ng-container *ngIf="registerForm.get('firstName')?.errors?.['maxlength']">Máximo 50 caracteres.</ng-container>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="lastName">Apellidos:</label>
-      <input id="lastName" type="text" formControlName="lastName">
-      <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="error-message">
-        <ng-container *ngIf="registerForm.get('lastName')?.errors?.['required']">Apellido es requerido.</ng-container>
-        <ng-container *ngIf="registerForm.get('lastName')?.errors?.['maxlength']">Máximo 50 caracteres.</ng-container>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input id="email" type="email" formControlName="email">
-      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-message">
-        <ng-container *ngIf="registerForm.get('email')?.errors?.['required']">Email es requerido.</ng-container>
-        <ng-container *ngIf="registerForm.get('email')?.errors?.['email']">Formato de email inválido.</ng-container>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="password">Contraseña:</label>
-      <input id="password" type="password" formControlName="password">
-      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-message">
-        <ng-container *ngIf="registerForm.get('password')?.errors?.['required']">Contraseña es requerida.</ng-container>
-        <ng-container *ngIf="registerForm.get('password')?.errors?.['minlength']">Mínimo 8 caracteres.</ng-container>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="age">Edad:</label>
-      <input id="age" type="number" formControlName="age">
-      <div *ngIf="registerForm.get('age')?.invalid && registerForm.get('age')?.touched" class="error-message">
-        <ng-container *ngIf="registerForm.get('age')?.errors?.['required']">Edad es requerida.</ng-container>
-        <ng-container *ngIf="registerForm.get('age')?.errors?.['min'] || registerForm.get('age')?.errors?.['max']">
-          Edad debe ser un número válido (ej. entre 1 y 150).
-        </ng-container>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="birthDate">Fecha de Nacimiento:</label>
-      <input id="birthDate" type="date" formControlName="birthDate">
-      <div *ngIf="registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched" class="error-message">
-        <ng-container *ngIf="registerForm.get('birthDate')?.errors?.['required']">Fecha de nacimiento es requerida.</ng-container>
+      <h3 class="register-title">Registrarse</h3>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input id="username" type="text" formControlName="username">
+          <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="error-message">
+            <ng-container *ngIf="registerForm.get('username')?.errors?.['required']">Username es requerido.</ng-container>
+            <ng-container *ngIf="registerForm.get('username')?.errors?.['minlength'] || registerForm.get('username')?.errors?.['maxlength']">
+              Username debe tener entre 3 y 20 caracteres.
+            </ng-container>
+          </div>
         </div>
-    </div>
 
-    <button type="submit" class="register-button" [disabled]="registerForm.invalid">Registrar</button>
-  </form>
-  <p class="form-link">¿Ya tienes cuenta? <a [routerLink]="['/auth/login']">Inicia sesión aquí</a></p>
-</div>
+        <div class="form-group">
+          <label for="firstName">Nombres:</label>
+          <input id="firstName" type="text" formControlName="firstName">
+          <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="error-message">
+            <ng-container *ngIf="registerForm.get('firstName')?.errors?.['required']">Nombre es requerido.</ng-container>
+            <ng-container *ngIf="registerForm.get('firstName')?.errors?.['maxlength']">Máximo 50 caracteres.</ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Apellidos:</label>
+          <input id="lastName" type="text" formControlName="lastName">
+          <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="error-message">
+            <ng-container *ngIf="registerForm.get('lastName')?.errors?.['required']">Apellido es requerido.</ng-container>
+            <ng-container *ngIf="registerForm.get('lastName')?.errors?.['maxlength']">Máximo 50 caracteres.</ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input id="email" type="email" formControlName="email">
+          <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-message">
+            <ng-container *ngIf="registerForm.get('email')?.errors?.['required']">Email es requerido.</ng-container>
+            <ng-container *ngIf="registerForm.get('email')?.errors?.['email']">Formato de email inválido.</ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña:</label>
+          <input id="password" type="password" formControlName="password">
+          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-message">
+            <ng-container *ngIf="registerForm.get('password')?.errors?.['required']">Contraseña es requerida.</ng-container>
+            <ng-container *ngIf="registerForm.get('password')?.errors?.['minlength']">Mínimo 8 caracteres.</ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Edad:</label>
+          <input id="age" type="number" formControlName="age">
+          <div *ngIf="registerForm.get('age')?.invalid && registerForm.get('age')?.touched" class="error-message">
+            <ng-container *ngIf="registerForm.get('age')?.errors?.['required']">Edad es requerida.</ng-container>
+            <ng-container *ngIf="registerForm.get('age')?.errors?.['min'] || registerForm.get('age')?.errors?.['max']">
+              Edad debe ser un número válido (ej. entre 1 y 150).
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="birthDate">Fecha de Nacimiento:</label>
+          <input id="birthDate" type="date" formControlName="birthDate">
+          <div *ngIf="registerForm.get('birthDate')?.invalid && registerForm.get('birthDate')?.touched" class="error-message">
+            <ng-container *ngIf="registerForm.get('birthDate')?.errors?.['required']">Fecha de nacimiento es requerida.</ng-container>
+            </div>
+        </div>
+
+        <button type="submit" class="register-button" [disabled]="registerForm.invalid">Registrar</button>
+      </form>
+      <p class="form-link">¿Ya tienes cuenta? <a [routerLink]="['/auth/login']">Inicia sesión aquí</a></p>
+    </div>
+  </app-window>
+  <app-window
+  [imageRoute]="'github.gif'"
+  [startLeft]="200"
+  [startTop]="100">
+    <div class="github-register">
+          <button (click)="registerGithub()">Github</button>
+    </div>
   </app-window>
 </div>
 

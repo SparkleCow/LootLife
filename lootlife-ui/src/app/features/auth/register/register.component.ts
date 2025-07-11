@@ -14,8 +14,8 @@ import { AuthResponse } from '../../../models/auth-response.model';
     CommonModule,
     WindowComponent,
     ReactiveFormsModule,
-    RouterLink
-  ],
+    RouterLink,
+],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -78,5 +78,13 @@ export class RegisterComponent {
       this.registerForm.markAllAsTouched(); // Para mostrar los mensajes de error en los campos
       alert('Por favor, completa todos los campos correctamente.');
     }
+  }
+
+  registerGithub() {
+    window.open(
+      'http://localhost:8080/oauth2/authorization/github',
+      'oauthLogin',
+      'width=600,height=700'
+    );
   }
 }

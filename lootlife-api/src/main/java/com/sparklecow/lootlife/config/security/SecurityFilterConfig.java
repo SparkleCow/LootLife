@@ -43,16 +43,17 @@ public class SecurityFilterConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/*").permitAll()
                         .requestMatchers("/task/*").authenticated()
-                        .requestMatchers("/oauth2/authorization/*").permitAll()
+                        .requestMatchers("/login/oauth2/*").permitAll()
                         .requestMatchers("/oauth-success").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
-                        .authorizationEndpoint(authorization -> authorization
+                        /*.authorizationEndpoint(authorization -> authorization
                                 .baseUri("/oauth2/authorize")
-                        )
+                        )*/
+                        //http://localhost:8080/oauth2/authorization/github TODO Remove this
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )

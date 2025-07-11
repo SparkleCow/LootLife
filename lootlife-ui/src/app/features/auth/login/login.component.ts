@@ -35,7 +35,6 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-
     if (this.loginForm.valid) {
 
       const loginRequest: LoginRequest = {

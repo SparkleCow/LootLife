@@ -87,3 +87,23 @@
   font-size: 0.8em;
   margin-top: 5px;
 }
+
+/*Oauth2 options*/
+
+.github-register{
+  display: flex;
+  justify-content: center;
+}
+
+.github-register button{
+  border: 1px outset black;
+  padding: 5px 20px;
+  margin: 5px 0px 5px 0px;
+  background-color: rgba(131, 33, 121, 0.90);
+  color: #f0f0f0;
+  transition: 300ms;
+}
+
+.github-register button:hover{
+  background-color: rgba(131, 33, 121);
+}
