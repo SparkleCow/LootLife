@@ -9,9 +9,4 @@ import { WindowComponent } from "../../shared/window/window.component";
 })
 export class MainComponent {
   //TODO implement a conection with an API that allows us get gifs with a trigger every 2 hours
-  public dynamicGifUrl1:string = "/window1.gif";
-  public dynamicGifUrl2:string = "/vaporwave.gif";
-  public dynamicGifUrl3:string = "/missions.gif";
-  public dynamicGifUrl4:string = "/internet.gif";
-
 }

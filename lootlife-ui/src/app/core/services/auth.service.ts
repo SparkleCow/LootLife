@@ -15,7 +15,6 @@ export class AuthService {
 
   constructor(private http:HttpClient) {}
 
-
   /**
   *Generic http handler
   * @param error  HttpErrorResponse
@@ -75,7 +74,11 @@ export class AuthService {
 
   saveToken(authResponse: AuthResponse){
     const token = authResponse.token;
-    localStorage.setItem("AUTH_TOKEN_KEY", token);
+    localStorage.setItem(this.AUTH_TOKEN_KEY, token);
+  }
+
+  getToken(){
+    return localStorage.getItem(this.AUTH_TOKEN_KEY);
   }
 
 }

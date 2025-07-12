@@ -1,25 +1,43 @@
 <div class="main-container">
   <app-window
-    [imageRoute]="dynamicGifUrl1"
+    [imageRoute]='"/window1.gif"'
+    [startLeft]="0"
+    [startTop]="0">
+  </app-window>
+
+  <app-window
+    [imageRoute]='"/vaporwave.gif"'
     [startLeft]="100"
+    [startTop]="200">
+  </app-window>
+
+  <app-window
+    [imageRoute]='"/missions.gif"'
+    [startLeft]="450"
     [startTop]="100">
   </app-window>
 
   <app-window
-    [imageRoute]="dynamicGifUrl2"
-    [startLeft]="300"
-    [startTop]="400">
+    [imageRoute]='"/internet.gif"'
+    [startLeft]="800"
+    [startTop]="000">
   </app-window>
 
   <app-window
-    [imageRoute]="dynamicGifUrl3"
-    [startLeft]="700"
-    [startTop]="100">
+    [imageRoute]='"/cassette.gif"'
+    [startLeft]="850"
+    [startTop]="300">
   </app-window>
 
-    <app-window
-    [imageRoute]="dynamicGifUrl4"
-    [startLeft]="900"
+  <app-window
+    [imageRoute]='"/duck.gif"'
+    [startLeft]="500"
     [startTop]="500">
+  </app-window>
+
+  <app-window
+    [imageRoute]='"/girl.gif"'
+    [startLeft]="10"
+    [startTop]="550">
   </app-window>
 </div>

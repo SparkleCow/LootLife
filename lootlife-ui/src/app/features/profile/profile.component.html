@@ -1,28 +1,35 @@
 <div class="profile-container">
+
   <div class="profile-information">
     <header class="profile-header">
-      <h1>SparkleCow</h1>
+      <h1>{{userLogged?.username}}</h1>
       <img src="/account.gif" alt="">
     </header>
     <main class="profile">
-      <h2>Fullname</h2>
-      <h2>Email</h2>
+      <h2>{{userLogged?.firstName}} {{userLogged?.lastName}}</h2>
+      <h2>{{userLogged?.email}}</h2>
+      <h2>Misiones completadas: {{ userLogged?.stats?.totalMissionsCompleted }}</h2>
+      <h2>Trofeos: 0</h2>
+      <h2>Larga noche de consuelo: 23 Minutos 32 Segundos</h2>
     </main>
   </div>
+
   <div class="stats-information">
+
     <header class="stats-header">
-      <h1>SparkleCow</h1>
-      <h2>Nivel 2</h2>
-      <h2>Puntos de experiencia 321</h2>
-      <h2>Proximo nivel en 300 puntos</h2>
-      <h2>Misiones completadas: 0</h2>
+      <h1>{{ userLogged?.username }}</h1>
+      <h2>Nivel {{ userLogged?.stats?.level }}</h2>
+      <h2>Puntos de experiencia {{ userLogged?.stats?.experiencePoints }}</h2>
+      <h2>Próximo nivel en {{ userLogged?.stats?.nextLevelAt }} puntos</h2>
+      <h2>Misiones completadas: {{ userLogged?.stats?.totalMissionsCompleted }}</h2>
     </header>
+
     <main class="stats">
       <div class="stat">
         <div class="stat-content">
-          <h3>Nivel fuerza</h3>
-          <h3>Experiencia en fuerza 231</h3>
-          <h3>Proximo nivel en 300</h3>
+          <h3>Nivel fuerza: {{ userLogged?.stats?.strengthLevel }}</h3>
+          <h3>Experiencia en fuerza: {{ userLogged?.stats?.strengthExperience }}</h3>
+          <h3>Próximo nivel en: {{ userLogged?.stats?.strengthNextLevelAt }}</h3>
         </div>
         <div class="stat-image">
           <img src="/account2.gif" alt="" width="100px">
@@ -31,9 +38,9 @@
 
       <div class="stat">
         <div class="stat-content">
-          <h3>Nivel inteligencia</h3>
-          <h3>Experiencia en inteligencia 231</h3>
-          <h3>Proximo nivel en 300</h3>
+          <h3>Nivel inteligencia: {{ userLogged?.stats?.intelligenceLevel }}</h3>
+          <h3>Experiencia en inteligencia: {{ userLogged?.stats?.intelligenceExperience }}</h3>
+          <h3>Próximo nivel en: {{ userLogged?.stats?.intelligenceNextLevelAt }}</h3>
         </div>
         <div class="stat-image">
           <img src="/github.gif" alt="" width="100px">
@@ -42,58 +49,58 @@
 
       <div class="stat">
         <div class="stat-content">
-          <h3>Nivel sabiduria</h3>
-          <h3>Experiencia en sabiduria 231</h3>
-          <h3>Proximo nivel en 300</h3>
+          <h3>Nivel sabiduría: {{ userLogged?.stats?.wisdomLevel }}</h3>
+          <h3>Experiencia en sabiduría: {{ userLogged?.stats?.wisdomExperience }}</h3>
+          <h3>Próximo nivel en: {{ userLogged?.stats?.wisdomNextLevelAt }}</h3>
         </div>
         <div class="stat-image">
-          <img src="/account2.gif" alt="" width="100px">
+          <img src="/internet.gif" alt="" width="100px">
         </div>
       </div>
 
       <div class="stat">
         <div class="stat-content">
-          <h3>Nivel carisma</h3>
-          <h3>Experiencia en carisma 231</h3>
-          <h3>Proximo nivel en 300</h3>
+          <h3>Nivel carisma: {{ userLogged?.stats?.charismaLevel }}</h3>
+          <h3>Experiencia en carisma: {{ userLogged?.stats?.charismaExperience }}</h3>
+          <h3>Próximo nivel en: {{ userLogged?.stats?.charismaNextLevelAt }}</h3>
         </div>
         <div class="stat-image">
-          <img src="/account2.gif" alt="" width="100px">
+          <img src="/missions.gif" alt="" width="100px">
         </div>
       </div>
 
       <div class="stat">
         <div class="stat-content">
-          <h3>Nivel destreza</h3>
-          <h3>Experiencia en carisma 231</h3>
-          <h3>Proximo nivel en 300</h3>
-        </div>
-        <div class="stat-image">
-          <img src="/github.gif" alt="" width="100px">
-        </div>
-      </div>
-      <div class="stat">
-        <div class="stat-content">
-          <h3>Nivel constitución</h3>
-          <h3>Experiencia en constitución 231</h3>
-          <h3>Proximo nivel en 300</h3>
-        </div>
-        <div class="stat-image">
-          <img src="/account2.gif" alt="" width="100px">
-        </div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-content">
-          <h3>Nivel suerte</h3>
-          <h3>Experiencia en suerte 231</h3>
-          <h3>Proximo nivel en 300</h3>
+          <h3>Nivel destreza: {{ userLogged?.stats?.dexterityLevel }}</h3>
+          <h3>Experiencia en destreza: {{ userLogged?.stats?.dexterityExperience }}</h3>
+          <h3>Próximo nivel en: {{ userLogged?.stats?.dexterityNextLevelAt }}</h3>
         </div>
         <div class="stat-image">
           <img src="/github.gif" alt="" width="100px">
         </div>
       </div>
 
+      <div class="stat">
+        <div class="stat-content">
+          <h3>Nivel constitución: {{ userLogged?.stats?.constitutionLevel }}</h3>
+          <h3>Experiencia en constitución: {{ userLogged?.stats?.constitutionExperience }}</h3>
+          <h3>Próximo nivel en: {{ userLogged?.stats?.constitutionNextLevelAt }}</h3>
+        </div>
+        <div class="stat-image">
+          <img src="/account2.gif" alt="" width="100px">
+        </div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-content">
+          <h3>Nivel suerte: {{ userLogged?.stats?.luckLevel }}</h3>
+          <h3>Experiencia en suerte: {{ userLogged?.stats?.luckExperience }}</h3>
+          <h3>Próximo nivel en: {{ userLogged?.stats?.luckNextLevelAt }}</h3>
+        </div>
+        <div class="stat-image">
+          <img src="/window1.gif" alt="" width="100px">
+        </div>
+      </div>
     </main>
   </div>
 </div>

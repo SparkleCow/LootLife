@@ -2,13 +2,14 @@
   display: flex;
   flex-direction: row;
   height: 100%;
+  color: aliceblue;
 }
 
 .profile-information {
   /* flex: <flex-grow> <flex-shrink> <flex-basis> */
   flex: 1; /* flex: 1 1 0% */
   padding: 15px;
-  background-color: rgba(133, 12, 170, 0.7);
+  background-color: rgba(131, 33, 121, 0.9);
   box-sizing: border-box;
   min-width: 0;
   border: 8px outset rgba(170, 16, 216, 0.5);;
@@ -23,10 +24,12 @@
   align-items: center;
   justify-content: space-around;
   flex: 1;
+  font-size: xx-large;
 }
 
 .profile-header img{
-  height: 100;
+  margin: 20px 0px 20px 0px;
+  height: 500px;
 }
 
 .profile{
@@ -40,7 +43,7 @@
   /* flex: <flex-grow> <flex-shrink> <flex-basis> */
   flex: 2; /* flex: 2 1 0% */
   padding: 15px;
-  background-color: rgba(133, 12, 170, 0.7);
+  background-color: rgba(131, 33, 121, 0.9);
   border: 8px outset rgba(170, 16, 216, 0.5);;
   box-sizing: border-box;
   min-width: 0;

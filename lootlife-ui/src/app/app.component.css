@@ -19,14 +19,15 @@
   margin:20px;
   background-color: rgba(131, 33, 121, 0.95);
   border: 5px outset rgba(152, 44, 141, 0.95);
+  color: aliceblue;
 }
 
 .vaporwave-gif{
   height: 20%;
   width: 80%;
-  background-color: aliceblue;
   /*offset x, offset y, blur radius, color*/
   box-shadow: 5px -8px 5px rgb(102, 32, 81);
+  border: 5px outset rgb(157, 62, 128);
 }
 
 .profile-image{
