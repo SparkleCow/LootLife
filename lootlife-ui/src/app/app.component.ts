@@ -19,4 +19,8 @@ export class AppComponent {
   redirectAtRegister(){
     this.router.navigate(['/auth/register']);
   }
+
+  redirectAtProfile(){
+    this.router.navigate(['/profile']);
+  }
 }

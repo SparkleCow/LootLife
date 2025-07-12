@@ -35,6 +35,11 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
+    public UserResponseDto findLoggedUser(Authentication authentication) {
+        return userMapper.toDto((User) authentication.getPrincipal());
+    }
+
+    @Override
     public User updateUserById(Long id, UserUpdateDto userUpdateDto) {
         return null;
     }
