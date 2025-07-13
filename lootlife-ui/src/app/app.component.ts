@@ -23,4 +23,8 @@ export class AppComponent {
   redirectAtProfile(){
     this.router.navigate(['/profile']);
   }
+
+  redirectAtTask(){
+    this.router.navigate(['/task']);
+  }
 }

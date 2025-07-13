@@ -17,5 +17,4 @@ public record TaskResponseDto(
         TaskDifficulty taskDifficulty,
         Integer progressRequired,
         Integer currentProgress
-) {
-}
+){}

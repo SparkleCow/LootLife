@@ -1,0 +1,76 @@
+<div class="tasks-container flex justify-around">
+
+  <div class="task-form">
+    <form action="" method="post">
+      <label for="title">Título</label>
+      <input type="text" id="title" name="title" maxlength="100" required>
+
+      <label for="description">Descripción</label>
+      <input type="text" id="description" name="description" maxlength="255" required>
+
+      <label for="taskDifficulty">Dificultad</label>
+      <select id="taskDifficulty" name="taskDifficulty" required>
+        <option value="">-- Selecciona dificultad --</option>
+        <option value="EASY">Fácil</option>
+        <option value="MEDIUM">Media</option>
+        <option value="HARD">Difícil</option>
+      </select>
+
+      <label for="statsCategories">Categorías de Estadística (máx. 3)</label>
+      <select id="statsCategories" name="statsCategories" multiple required>
+        <option value="STRENGTH">Fuerza</option>
+        <option value="AGILITY">Agilidad</option>
+        <option value="INTELLIGENCE">Inteligencia</option>
+        <option value="ENDURANCE">Resistencia</option>
+        <option value="LUCK">Suerte</option>
+      </select>
+
+      <label for="deadline">Fecha límite</label>
+      <input type="datetime-local" id="deadline" name="deadline" required>
+
+      <label for="progressRequired">Progreso requerido</label>
+      <input type="number" id="progressRequired" name="progressRequired" min="1" required>
+
+      <button type="submit">Agregar tarea</button>
+    </form>
+  </div>
+
+  <div class="task-table-container">
+    <table class="task-table">
+      <tr class="task-header">
+        <th>Titulo</th>
+        <th>Descripcion</th>
+        <th>Recompensa</th>
+        <th>Dificultad</th>
+        <th>Deadline</th>
+        <th>Progreso</th>
+        <th>Categorias</th>
+        <th>Acciones</th>
+      </tr>
+
+      <tbody>
+        <tr>
+          <td>Titulo</td>
+          <td>Descripcion</td>
+          <td>xpReward</td>
+          <td>Dificultad</td>
+          <td>Deadline</td>
+          <td>Progreso</td>
+          <td>Categorias</td>
+          <td><button>x</button></td>
+        </tr>
+
+        <tr>
+          <td>Titulo</td>
+          <td>Descripcion</td>
+          <td>xpReward</td>
+          <td>Dificultad</td>
+          <td>Deadline</td>
+          <td>Progreso</td>
+          <td>Categorias</td>
+          <td><button>x</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
