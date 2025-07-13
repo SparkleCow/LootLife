@@ -11,19 +11,34 @@
       <label for="taskDifficulty">Dificultad</label>
       <select id="taskDifficulty" name="taskDifficulty" required>
         <option value="">-- Selecciona dificultad --</option>
-        <option value="EASY">Fácil</option>
+        <option value="EASY">Fácil 🐔</option>
         <option value="MEDIUM">Media</option>
         <option value="HARD">Difícil</option>
+        <option value="EXTREME">Extremo 💀</option>
       </select>
 
-      <label for="statsCategories">Categorías de Estadística (máx. 3)</label>
-      <select id="statsCategories" name="statsCategories" multiple required>
-        <option value="STRENGTH">Fuerza</option>
-        <option value="AGILITY">Agilidad</option>
-        <option value="INTELLIGENCE">Inteligencia</option>
-        <option value="ENDURANCE">Resistencia</option>
-        <option value="LUCK">Suerte</option>
-      </select>
+      <div class="stats-checkboxes">
+        @for (option of statsOptions; track option.value) {
+          <div class="stat-checkbox">
+            <label>
+            {{ option.label }}
+            </label>
+            <input
+                type="checkbox"
+                [value]="option.value"
+                (change)="onCheckboxChange($event)"
+                [checked]="selectedCategories.includes(option.value)"
+                [disabled]="
+                  selectedCategories.length >= 3 && !selectedCategories.includes(option.value)
+                "
+              />
+          </div>
+        }
+      </div>
+
+      <p class="warning" *ngIf="selectedCategories.length >= 3">
+        Máximo 3 categorías seleccionadas
+      </p>
 
       <label for="deadline">Fecha límite</label>
       <input type="datetime-local" id="deadline" name="deadline" required>

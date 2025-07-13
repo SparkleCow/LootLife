@@ -3,11 +3,13 @@
 }
 
 .task-form{
+  padding: 10px;
   color:aliceblue;
   display: flex;
   flex-direction: column;
   background-color: rgba(131, 33, 121, 0.95);
   border: 5px outset rgba(152, 44, 141, 0.95);
+  font-size: 15px;
 }
 
 .task-form label {
@@ -23,6 +25,60 @@
   padding: 8px;
   margin-top: 5px;
   box-sizing: border-box;
+}
+
+.task-form input{
+  background-color: rgba(149, 37, 137, 0.95);
+  border: 3px inset rgba(152, 44, 141, 0.95);
+}
+
+#taskDifficulty {
+  background-color: rgba(149, 37, 137, 0.95);
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 4px;
+}
+
+.stats-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 300px;
+}
+
+.stat-checkbox{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.stat-checkbox label {
+  flex-grow: 1;
+  min-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stats-checkboxes input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+.stats-checkboxes label:hover {
+  background-color: #f0f0f0;
+}
+
+.warning {
+  margin-top: 10px;
+  color: red;
+  font-weight: bold;
 }
 
 .task-form button {
