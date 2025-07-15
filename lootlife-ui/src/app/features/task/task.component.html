@@ -1,15 +1,15 @@
 <div class="tasks-container flex justify-around">
 
   <div class="task-form">
-    <form action="" method="post">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
       <label for="title">Título</label>
-      <input type="text" id="title" name="title" maxlength="100" required>
+      <input type="text" id="title" formControlName="title" maxlength="100" required>
 
       <label for="description">Descripción</label>
-      <input type="text" id="description" name="description" maxlength="255" required>
+      <input type="text" id="description" formControlName="description" maxlength="255" required>
 
       <label for="taskDifficulty">Dificultad</label>
-      <select id="taskDifficulty" name="taskDifficulty" required>
+      <select id="taskDifficulty" formControlName="taskDifficulty" required>
         <option value="">-- Selecciona dificultad --</option>
         <option value="EASY">Fácil 🐔</option>
         <option value="MEDIUM">Media</option>
@@ -20,18 +20,16 @@
       <div class="stats-checkboxes">
         @for (option of statsOptions; track option.value) {
           <div class="stat-checkbox">
-            <label>
-            {{ option.label }}
-            </label>
+            <label>{{ option.label }}</label>
             <input
-                type="checkbox"
-                [value]="option.value"
-                (change)="onCheckboxChange($event)"
-                [checked]="selectedCategories.includes(option.value)"
-                [disabled]="
-                  selectedCategories.length >= 3 && !selectedCategories.includes(option.value)
-                "
-              />
+              type="checkbox"
+              [value]="option.value"
+              (change)="onCheckboxChange($event)"
+              [checked]="selectedCategories.includes(option.value)"
+              [disabled]="
+                selectedCategories.length >= 3 && !selectedCategories.includes(option.value)
+              "
+            />
           </div>
         }
       </div>
@@ -41,10 +39,10 @@
       </p>
 
       <label for="deadline">Fecha límite</label>
-      <input type="datetime-local" id="deadline" name="deadline" required>
+      <input type="datetime-local" id="deadline" formControlName="deadline" required>
 
       <label for="progressRequired">Progreso requerido</label>
-      <input type="number" id="progressRequired" name="progressRequired" min="1" required>
+      <input type="number" id="progressRequired" formControlName="progressRequired" min="1" required>
 
       <button type="submit">Agregar tarea</button>
     </form>

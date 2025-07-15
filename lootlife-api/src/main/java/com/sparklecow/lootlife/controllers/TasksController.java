@@ -22,8 +22,9 @@ public class TasksController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<TaskResponseDto> createTask(Authentication authentication, @RequestBody @Valid TaskRequestDto taskRequestDto){
-        return ResponseEntity.ok(taskService.createTask((User) authentication.getPrincipal(), taskRequestDto));
+    public ResponseEntity<Void> createTask(Authentication authentication, @RequestBody @Valid TaskRequestDto taskRequestDto){
+        taskService.createTask((User) authentication.getPrincipal(), taskRequestDto);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/complete/{id}")

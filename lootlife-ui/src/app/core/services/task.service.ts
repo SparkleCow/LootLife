@@ -1,14 +1,15 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { UserResponseDto } from '../../models/user-response-dto.model';
+import { TaskRequestDto } from '../../models/task-request-dto.model';
+import { TaskResponseDto } from '../../models/task-response-dto.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class TaskService {
 
-  private baseUrl: string = 'http://localhost:8080/user'
+  private baseUrl: string = 'http://localhost:8080/task'
 
   constructor(private http:HttpClient) {}
 
@@ -45,7 +46,14 @@ export class UserService {
     return throwError(() => new Error(errorMessage));
   }
 
-  getUserInformation() : Observable<UserResponseDto>{
-    return this.http.get<UserResponseDto>(this.baseUrl).pipe(catchError(this.handleError));
+  /*This method will allow us to retrieve all the users´s request. It will recieve the
+  jwt from the browser and it will send it with angular interceptor to Lootlife API.
+  If the validation is successful, the API will return the values.*/
+  findUserTask(): Observable<TaskResponseDto[]> {
+    return this.http.get<TaskResponseDto[]>(this.baseUrl).pipe(catchError(this.handleError));
+  }
+
+  createTask(taskResquestDto:TaskRequestDto): Observable<void>{
+    return this.http.post<void>(this.baseUrl, taskResquestDto).pipe(catchError(this.handleError));
   }
 }

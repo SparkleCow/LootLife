@@ -35,3 +35,11 @@ export interface StatsResponseDto {
 
   totalMissionsCompleted: number;
 }
+
+export enum StatType {
+  STRENGTH = 'STRENGTH',
+  AGILITY = 'AGILITY',
+  INTELLIGENCE = 'INTELLIGENCE',
+  ENDURANCE = 'ENDURANCE',
+  LUCK = 'LUCK'
+}
