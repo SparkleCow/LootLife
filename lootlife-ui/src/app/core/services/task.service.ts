@@ -56,4 +56,15 @@ export class TaskService {
   createTask(taskResquestDto:TaskRequestDto): Observable<void>{
     return this.http.post<void>(this.baseUrl, taskResquestDto).pipe(catchError(this.handleError));
   }
+
+  completeTask(id:number): Observable<void>{
+    const url = `${this.baseUrl}/complete/${id}`;
+    return this.http.post<void>(url, {}).pipe(catchError(this.handleError));
+  }
+
+  deleteTask(id:number): Observable<void>{
+    const url = `${this.baseUrl}/${id}`;
+    return this.http.delete<void>(url, {}).pipe(catchError(this.handleError));
+  }
+
 }

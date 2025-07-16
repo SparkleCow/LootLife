@@ -62,27 +62,21 @@
       </tr>
 
       <tbody>
-        <tr>
-          <td>Titulo</td>
-          <td>Descripcion</td>
-          <td>xpReward</td>
-          <td>Dificultad</td>
-          <td>Deadline</td>
-          <td>Progreso</td>
-          <td>Categorias</td>
-          <td><button>x</button></td>
-        </tr>
-
-        <tr>
-          <td>Titulo</td>
-          <td>Descripcion</td>
-          <td>xpReward</td>
-          <td>Dificultad</td>
-          <td>Deadline</td>
-          <td>Progreso</td>
-          <td>Categorias</td>
-          <td><button>x</button></td>
-        </tr>
+        @for(task of userTasks; track task.id){
+          <tr [ngClass]="{ 'completed-row': !task.isActive }">
+            <td>{{task.title}}</td>
+            <td>{{task.description}}</td>
+            <td>{{task.xpReward}}</td>
+            <td>{{task.taskDifficulty}}</td>
+            <td>{{task.deadline}}</td>
+            <td>{{task.progressRequired}}</td>
+            <td>{{task.statsCategories}}</td>
+            <td>
+              <button (click)="completeTask(task.id)">Complete</button>
+              <button (click)="deleteTask(task.id)">Delete</button>
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

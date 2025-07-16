@@ -19,11 +19,10 @@ export class TaskComponent implements OnInit{
 
   taskForm: FormGroup;
   selectedCategories: string[] = [];
-  userTasks: TaskResponseDto[];
+  userTasks?: TaskResponseDto[];
 
   statsOptions = [
     { label: 'Fuerza', value: 'STRENGTH' },
-    { label: 'Agilidad', value: 'AGILITY' },
     { label: 'Inteligencia', value: 'INTELLIGENCE' },
     { label: 'Constitución', value: 'CONSTITUTION' },
     { label: 'Suerte', value: 'LUCK' },
@@ -44,7 +43,15 @@ export class TaskComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this._taskService.findUserTask().subscribe({
+      next: (response:TaskResponseDto[]) => {
+        this.userTasks = response;
+      },
+      error: (error: any) => {
+        console.error('Error durante el registro:', error.message);
+        alert('Error en el registro: ' + error.message);
+      }
+    });
   }
 
   onCheckboxChange(event: Event) {
@@ -78,11 +85,66 @@ export class TaskComponent implements OnInit{
     };
 
     console.log('DTO listo para backend:', dto);
-    this._taskService.createTask(dto);
+    this._taskService.createTask(dto).subscribe({
+      next: () => {
+        this._taskService.findUserTask().subscribe({
+          next: (response: TaskResponseDto[]) => {
+            this.userTasks = response;
+          },
+          error: (err) => {
+            console.error('Error al recargar tareas:', err.message);
+          }
+        });
+        this.taskForm.reset();
+        this.selectedCategories = [];
+      },
+      error: (error) => {
+        console.error('Error al crear tarea:', error.message);
+        alert('Error al crear tarea: ' + error.message);
+      }
+    });
   }
 
   convertToISOString(dateString: string | null): string | null {
     if (!dateString) return null;
     return new Date(dateString).toISOString();
+  }
+
+  completeTask(id:number){
+    this._taskService.completeTask(id).subscribe({
+      next: () => {
+        this._taskService.findUserTask().subscribe({
+          next: (response: TaskResponseDto[]) => {
+            this.userTasks = response;
+          },
+          error: (err) => {
+            console.error('Error al recargar tareas:', err.message);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error al crear tarea:', error.message);
+        alert('Error al crear tarea: ' + error.message);
+      }
+    });
+  }
+
+  deleteTask(id:number){
+    this._taskService.deleteTask(id).subscribe({
+      next: () => {
+        this._taskService.findUserTask().subscribe({
+          next: (response: TaskResponseDto[]) => {
+            this.userTasks = response;
+          },
+          error: (err) => {
+            console.error('Error al recargar tareas:', err.message);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error al crear tarea:', error.message);
+        alert('Error al crear tarea: ' + error.message);
+      }
+    });
   }
 }

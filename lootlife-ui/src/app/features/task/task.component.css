@@ -101,6 +101,7 @@
 .task-table-container{
   background-color: rgba(131, 33, 121, 0.95);
   border: 5px outset rgba(152, 44, 141, 0.95);
+  color: aliceblue;
 }
 
 .task-header{
@@ -112,6 +113,20 @@
   padding: 10px;
 }
 
+.task-table td {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 8px;
+  vertical-align: top;
+}
+
 td{
   padding: 10px 0px;
+}
+
+.completed-row{
+  opacity: 0.5;
+  background-color: #45a049;
 }
