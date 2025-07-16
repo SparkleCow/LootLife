@@ -18,6 +18,7 @@ export class WindowComponent implements OnInit {
   imageRoute = input<string>('');
   @Input() startLeft:number = 0;
   @Input() startTop:number = 0;
+  @Input() title?:string;
 
   posX:number = 0;
   posY:number = 0;

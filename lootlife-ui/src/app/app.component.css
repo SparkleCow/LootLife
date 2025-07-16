@@ -1,8 +1,9 @@
 .home-container{
   display: flex;
   flex-direction: row;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
   align-items: center;
   background-image: url('/backgroundMain.gif');
   background-repeat: no-repeat;
@@ -30,12 +31,9 @@
   border: 5px outset rgb(157, 62, 128);
 }
 
-.profile-image{
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  /*offset x, offset y, blur radius, color*/
-  box-shadow: 10px -8px 5px rgb(102, 32, 81);
+.vaporwave-gif:hover{
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 ul{

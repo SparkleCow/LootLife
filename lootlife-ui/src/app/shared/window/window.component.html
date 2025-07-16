@@ -1,7 +1,11 @@
 <div class="window">
   <header class="title-bar" (mousedown)="onMouseDown($event)">
     <div class="title-bar-text">
-      <p>Welcome!</p>
+      @if (title) {
+        <p>{{title}}</p>
+      } @else {
+        <p>Welcome!</p>
+      }
     </div>
     <div class="title-bar-controls">
       <button aria-label="Minimize"></button>

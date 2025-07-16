@@ -1,26 +1,16 @@
 <div class="main-container">
-  <app-window
-    [imageRoute]='"/window1.gif"'
-    [startLeft]="0"
-    [startTop]="0">
-  </app-window>
 
   <app-window
-    [imageRoute]='"/vaporwave.gif"'
-    [startLeft]="100"
-    [startTop]="200">
-  </app-window>
-
-  <app-window
-    [imageRoute]='"/missions.gif"'
-    [startLeft]="450"
-    [startTop]="100">
-  </app-window>
-
-  <app-window
-    [imageRoute]='"/internet.gif"'
-    [startLeft]="800"
-    [startTop]="000">
+    [title]='"Spark"'
+    [imageRoute]='"/ia.gif"'
+    [startLeft]="350"
+    [startTop]="70">
+    <div class="welcome-container">
+      <h2 class="welcome-title">Spark</h2>
+      <p class="welcome-text">
+       Te da misiones, te motiva y convierte tu día en aventura.
+      </p>
+    </div>
   </app-window>
 
   <app-window
@@ -31,13 +21,20 @@
 
   <app-window
     [imageRoute]='"/duck.gif"'
-    [startLeft]="500"
-    [startTop]="500">
+    [startLeft]="150"
+    [startTop]="550">
   </app-window>
 
   <app-window
+    [title]='"Lootlife"'
     [imageRoute]='"/girl.gif"'
-    [startLeft]="10"
-    [startTop]="550">
+    [startLeft]="0"
+    [startTop]="0">
+    <div class="welcome-container">
+      <h2 class="welcome-title">¡Bienvenido a Lootlife!</h2>
+      <p class="welcome-text">
+        Explora, crea y disfruta de nuevas aventuras en nuestra plataforma.
+      </p>
+    </div>
   </app-window>
 </div>
