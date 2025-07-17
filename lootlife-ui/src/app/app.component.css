@@ -23,17 +23,101 @@
   color: aliceblue;
 }
 
-.vaporwave-gif{
+.gif-container {
+  position: relative;
   height: 20%;
   width: 80%;
+  cursor: pointer;
   /*offset x, offset y, blur radius, color*/
   box-shadow: 5px -8px 5px rgb(102, 32, 81);
   border: 5px outset rgb(157, 62, 128);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.gif-container:hover {
+  opacity: 0.8;
+  transform: scale(1.03);
+}
+
+.vaporwave-gif{
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.gif-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+
+  background-size: 200% 200%;
+
+  animation: vaporwave-gradient 2s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
+
+  font-weight: bolder;
+  font-size: 16px;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+
+  pointer-events: none;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gif-container:hover .gif-text {
+  opacity: 1;
+}
+
+@keyframes vaporwave-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .vaporwave-gif:hover{
   opacity: 0.8;
   cursor: pointer;
+}
+
+ul{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*Transition for hover*/
+  transition: transform 0.5s ease;
+}
+
+ul img{
+  width: 50px;
+  height: 50px;
+}
+
+ul:hover{
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.main-content{
+  flex-grow: 1;
+  padding: 2rem;
+  height: 95vh;
+  position: relative;
 }
 
 ul{

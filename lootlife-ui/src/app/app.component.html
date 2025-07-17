@@ -6,7 +6,10 @@
     <ul><img src="/missions.gif"/>Misiones</ul>
     <ul (click)="redirectAtProfile()"><img src="/account2.gif"/>Estadisticas</ul>
     <ul><img src="/perfil.gif"/>Perfil</ul>
-    <img src="/gif.gif" alt="Gif vaporwave" class="vaporwave-gif" (click)="playRandomSong()" style="cursor: pointer;">
+    <div class="gif-container" (click)="playRandomSong()">
+      <img src="/music.gif" alt="Gif vaporwave" class="vaporwave-gif">
+      <div class="gif-text">🎵 Click para música</div>
+    </div>
     <audio #audioPlayer controls style="display: none;">
       <source type="audio/mpeg">
       Tu navegador no soporta audio.
