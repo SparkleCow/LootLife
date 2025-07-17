@@ -72,13 +72,67 @@ EXPIRED,        // Misión expirada sin completar
 CANCELLED       // Misión cancelada por sistema o usuario
 ```
 
-## Métodos Helper
+## Servicios Creados
 
-- **isExpired()**: Verifica si la misión ha expirado
-- **isCompleted()**: Verifica si la misión está completada
-- **isActive()**: Verifica si la misión está activa
-- **getProgressPercentage()**: Calcula el porcentaje de progreso
-- **canBeCompleted()**: Verifica si la misión puede ser completada
+### MissionService
+Servicio principal que maneja toda la lógica de negocio de misiones:
+
+#### Métodos Utility (ex-helper methods):
+- **isExpired(Mission)**: Verifica si la misión ha expirado
+- **isCompleted(Mission)**: Verifica si la misión está completada
+- **isActive(Mission)**: Verifica si la misión está activa
+- **getProgressPercentage(Mission)**: Calcula el porcentaje de progreso
+- **canBeCompleted(Mission)**: Verifica si la misión puede ser completada
+
+#### CRUD Operations:
+- **createMission()**: Crea nueva misión con validaciones
+- **getActiveMissions()**: Obtiene misiones activas del usuario
+- **getTodaysDailyMissions()**: Misiones diarias de hoy
+- **getUserMissions()**: Todas las misiones del usuario
+
+#### Progress & Completion:
+- **updateMissionProgress()**: Actualiza progreso con auto-completado
+- **completeMission()**: Completa misión manualmente
+- **startMission()**: Inicia misión pendiente
+
+#### Analytics & Stats:
+- **getUserMissionStats()**: Estadísticas completas del usuario
+- **calculateDailyStreak()**: Calcula racha diaria actual
+- **getMissionsExpiringSoon()**: Para notificaciones
+
+#### AI Support:
+- **analyzeUserWeakStats()**: Analiza stats débiles para IA
+- **suggestDifficultyForUser()**: Sugiere dificultad apropiada
+- **calculateSuggestedXpReward()**: Calcula XP basado en tipo/dificultad
+
+#### Scheduled Tasks:
+- **expireOverdueMissions()**: Job automático cada 5 minutos
+
+#### Validation:
+- **getMissionsRequiringValidation()**: Misiones pendientes de validar
+- **validateMission()**: Valida misión manualmente
+
+#### Bulk Operations:
+- **cancelAllUserMissions()**: Cancela todas las misiones activas
+- **getRecentMissionHistoryForAI()**: Historial para análisis de IA
+
+### MissionGenerationService
+Servicio especializado para generación inteligente de misiones:
+
+#### Generación por Tipo:
+- **generateDailyMission()**: Misión diaria personalizada
+- **generateStreakMission()**: Misión de racha (después de 3 días)
+- **generateAchievementMission()**: Misión de logro (usuarios nivel 10+)
+- **generateSkillBoostMission()**: Misión de mejora específica
+- **generateDailyMissionSet()**: Set completo de misiones diarias
+
+#### Features Inteligentes:
+- Templates personalizados por StatType
+- Análisis de estadísticas débiles
+- Dificultad adaptativa por nivel de usuario
+- Sistema de bonificaciones por rachas
+- Validación automática para metas altas
+- Generación probabilística de misiones especiales
 
 ## Repository Personalizado
 
@@ -93,44 +147,77 @@ El `MissionRepository` incluye consultas especializadas para:
 
 ## Casos de Uso
 
-### 1. Misión Diaria Simple
+### 1. Generar Misiones Automáticamente con IA
 ```java
-Mission dailyMission = Mission.builder()
-    .title("Completa 3 tareas de fuerza")
-    .description("Completa cualquier 3 tareas relacionadas con fuerza física")
-    .missionType(MissionType.DAILY)
-    .difficulty(TaskDifficulty.MEDIUM)
-    .targetQuantity(3)
-    .xpReward(150L)
-    .user(user)
-    .assignedAt(LocalDateTime.now())
-    .expiresAt(LocalDateTime.now().plusDays(1))
-    .build();
+@Autowired
+private MissionGenerationService missionGenerationService;
+
+// Genera set completo de misiones diarias para un usuario
+List<Mission> dailyMissions = missionGenerationService.generateDailyMissionSet(user);
+
+// Genera solo misión diaria principal
+Mission dailyMission = missionGenerationService.generateDailyMission(user);
+
+// Genera misión de mejora específica
+Mission skillMission = missionGenerationService.generateSkillBoostMission(user, StatType.INTELLIGENCE);
 ```
 
-### 2. Misión de Racha
+### 2. Gestión de Progreso de Misiones
 ```java
-Mission streakMission = Mission.builder()
-    .title("Mantén tu racha diaria - Día 7")
-    .description("Completa al menos una tarea hoy para mantener tu racha de 7 días")
-    .missionType(MissionType.STREAK)
-    .isStreakMission(true)
-    .streakDay(7)
-    .bonusXpReward(300L)
-    .priority(9)
-    .build();
+@Autowired
+private MissionService missionService;
+
+// Actualizar progreso de misión
+Mission updatedMission = missionService.updateMissionProgress(missionId, 1);
+
+// Completar misión manualmente
+Mission completedMission = missionService.completeMission(mission);
+
+// Verificar si puede ser completada
+boolean canComplete = missionService.canBeCompleted(mission);
+
+// Obtener porcentaje de progreso
+double progress = missionService.getProgressPercentage(mission);
 ```
 
-### 3. Misión de Mejora de Habilidad
+### 3. Analytics y Estadísticas
 ```java
-Mission skillBoostMission = Mission.builder()
-    .title("Enfoque en Inteligencia")
-    .description("Basado en tus estadísticas, necesitas mejorar tu inteligencia. Completa 2 tareas de aprendizaje.")
-    .missionType(MissionType.SKILL_BOOST)
-    .generationReason("Usuario tiene inteligencia baja comparada con otras stats")
-    .statsCategories(Set.of(StatType.INTELLIGENCE))
-    .targetQuantity(2)
-    .build();
+// Obtener estadísticas completas del usuario
+Map<String, Object> stats = missionService.getUserMissionStats(user);
+// Contiene: totalCompleted, weeklyCompleted, currentStreak, activeMissions, averageProgress
+
+// Calcular racha diaria
+int streak = missionService.calculateDailyStreak(user);
+
+// Obtener misiones que expiran pronto (para notificaciones)
+List<Mission> expiringSoon = missionService.getMissionsExpiringSoon(user, 2); // próximas 2 horas
+```
+
+### 4. Análisis para IA
+```java
+// Analizar estadísticas débiles del usuario
+List<StatType> weakStats = missionService.analyzeUserWeakStats(user);
+
+// Sugerir dificultad apropiada
+TaskDifficulty suggestedDifficulty = missionService.suggestDifficultyForUser(user);
+
+// Calcular XP sugerido
+long xpReward = missionService.calculateSuggestedXpReward(TaskDifficulty.MEDIUM, MissionType.DAILY);
+
+// Obtener historial para análisis de IA
+List<Mission> recentHistory = missionService.getRecentMissionHistoryForAI(user, 30); // últimos 30 días
+```
+
+### 5. Validación y Administración
+```java
+// Obtener misiones que requieren validación manual
+List<Mission> pendingValidation = missionService.getMissionsRequiringValidation();
+
+// Validar misión
+Mission validatedMission = missionService.validateMission(missionId, true, "Aprobada por moderador");
+
+// Cancelar todas las misiones de un usuario
+missionService.cancelAllUserMissions(user, "Usuario suspendido temporalmente");
 ```
 
 ## Integración con IA
@@ -151,8 +238,23 @@ La entidad está diseñada para soportar generación inteligente de misiones:
 
 ## Próximos Pasos
 
-1. Implementar servicio de generación de misiones por IA
-2. Crear controlador REST para gestión de misiones
-3. Desarrollar sistema de notificaciones
-4. Implementar métricas y analytics de misiones
-5. Crear UI para mostrar misiones al usuario
+1. ✅ **Implementar servicios de misiones** - MissionService y MissionGenerationService creados
+2. **Crear controlador REST para gestión de misiones** - Endpoints para CRUD y gestión
+3. **Desarrollar sistema de notificaciones** - Usar getMissionsExpiringSoon() 
+4. **Configurar jobs programados** - Habilitar @EnableScheduling para expireOverdueMissions()
+5. **Implementar métricas y analytics avanzados** - Dashboard de admin
+6. **Crear UI para mostrar misiones al usuario** - Frontend con progreso visual
+7. **Integrar con sistema de tareas existente** - Conectar completion de tasks con missions
+8. **Implementar sistema de recompensas** - Aplicar XP rewards al completar misiones
+9. **Crear sistema de notificaciones push/email** - Alertas de misiones que expiran
+10. **Desarrollar algoritmos de IA más avanzados** - Machine learning para personalización
+
+## Archivos Creados
+- ✅ `Mission.java` - Entidad principal
+- ✅ `MissionType.java` - Enum de tipos de misión
+- ✅ `MissionStatus.java` - Enum de estados
+- ✅ `MissionRepository.java` - Repository con consultas especializadas
+- ✅ `MissionService.java` - Servicio principal con toda la lógica
+- ✅ `MissionGenerationService.java` - Servicio de generación inteligente
+- ✅ Actualizada `User.java` - Relación con misiones
+- ✅ `mission-entity-documentation.md` - Documentación completa

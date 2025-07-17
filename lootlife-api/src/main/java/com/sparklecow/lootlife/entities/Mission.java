@@ -131,27 +131,5 @@ public class Mission {
     )
     private Set<Task> relatedTasks = new HashSet<>();
     
-    // Helper methods
-    public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expiresAt);
-    }
-    
-    public boolean isCompleted() {
-        return status == MissionStatus.COMPLETED;
-    }
-    
-    public boolean isActive() {
-        return status == MissionStatus.ACTIVE;
-    }
-    
-    public double getProgressPercentage() {
-        if (targetQuantity == null || targetQuantity == 0) {
-            return isCompleted() ? 100.0 : 0.0;
-        }
-        return Math.min(100.0, (currentProgress * 100.0) / targetQuantity);
-    }
-    
-    public boolean canBeCompleted() {
-        return !isExpired() && (status == MissionStatus.ACTIVE || status == MissionStatus.PENDING);
-    }
+
 }
