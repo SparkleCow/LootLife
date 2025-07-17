@@ -87,6 +87,9 @@ public class User implements UserDetails, Principal {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> tasks;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Mission> missions;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
