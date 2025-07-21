@@ -73,3 +73,5 @@ application:
       expiration: 8640000
   mailing:
     activation-url: http://localhost:4200/activate-account
+  ia_agent:
+    spark: ${SPARK_AGENT_KEY}
