@@ -65,3 +65,22 @@ Data Validation: Comprehensive input validation using Bean Validation
 Email Integration: HTML email templates for notifications
 PostgreSQL Integration: Robust data persistence with JPA/Hibernate
 MapStruct Integration: Efficient DTO mapping with compile-time code generation
+
+## How can I install it ? 
+
+### Clone the repository:
+Use the following command in your Git terminal:
+git clone https://github.com/SparkleCow/LootLife.git
+
+### Start the containers:
+Run docker-compose up -d to start the database.
+
+### Configure Spring:
+If you have any custom configurations or modify attributes in the Docker Compose file, make sure to update the corresponding variables.
+
+### Configure Angular:
+Run npm install to download all the Node modules used in the project.
+
+### Start backend and frontend:
+Once the container is up and running, start the Spring and Angular services:
+Use mvn spring-boot:run for Spring and ng serve for Angular.
