@@ -1,5 +1,6 @@
 package com.sparklecow.lootlife.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparklecow.lootlife.models.mission.MissionStatus;
 import com.sparklecow.lootlife.models.stats.StatType;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
@@ -108,31 +109,8 @@ public class Mission {
     private String validationNotes; // Additional notes for validation
 
     // User relationship
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    // Helper methods
-    public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expiresAt);
-    }
-
-    public boolean isCompleted() {
-        return status == MissionStatus.COMPLETED;
-    }
-
-    public boolean isActive() {
-        return status == MissionStatus.ACTIVE;
-    }
-
-    public double getProgressPercentage() {
-        if (targetQuantity == null || targetQuantity == 0) {
-            return isCompleted() ? 100.0 : 0.0;
-        }
-        return Math.min(100.0, (currentProgress * 100.0) / targetQuantity);
-    }
-
-    public boolean canBeCompleted() {
-        return !isExpired() && (status == MissionStatus.ACTIVE || status == MissionStatus.PENDING);
-    }
 }

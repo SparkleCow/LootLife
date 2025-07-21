@@ -15,13 +15,13 @@ import java.util.Map;
 public class IAServiceImp implements IAService{
 
     private final WebClient webClient;
+    private static final String MODEL = "mistralai/mistral-small-3.1-24b-instruct:free";
 
     @Override
     public String sendRequest(String message) {
-        String model = "mistralai/mistral-nemo:free";
 
         Map<String, Object> request = Map.of(
-                "model", model,
+                "model", MODEL,
                 "messages", List.of(
                         Map.of("role", "user", "content", message)
                 )

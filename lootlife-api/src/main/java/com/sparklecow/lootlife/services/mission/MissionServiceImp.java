@@ -1,5 +1,8 @@
 package com.sparklecow.lootlife.services.mission;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparklecow.lootlife.entities.Mission;
 import com.sparklecow.lootlife.entities.Stats;
 import com.sparklecow.lootlife.entities.User;
@@ -7,6 +10,7 @@ import com.sparklecow.lootlife.models.mission.MissionStatus;
 import com.sparklecow.lootlife.models.stats.StatType;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.repositories.MissionRepository;
+import com.sparklecow.lootlife.repositories.UserRepository;
 import com.sparklecow.lootlife.services.ia.IAService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +33,7 @@ public class MissionServiceImp implements MissionService{
 
     private final MissionRepository missionRepository;
     private final IAService iaService;
+    private final UserRepository userRepository;
 
     /*Utils*/
     @Override
@@ -60,13 +65,83 @@ public class MissionServiceImp implements MissionService{
 
     /*CRUD Operations*/
 
+    public Mission createMission(User user) throws JsonProcessingException {
+        User userFromDb = userRepository.findByUsername(user.getUsername()).orElseThrow();
+        TaskDifficulty taskDifficulty = suggestDifficultyForUser(userFromDb);
+        List<StatType> userWeakStats = analyzeUserWeakStats(userFromDb);
+        long xp;
+        switch (taskDifficulty) {
+            case EASY -> xp = 50;
+            case MEDIUM -> xp = 500;
+            case HARD -> xp = 1000;
+            case EXTREME -> xp = 5000;
+            default -> xp = 0;
+        }
+
+        String prompt = """
+        Eres un NPC maestro de misiones en un videojuego de gamificación de la vida real.
+        Tu trabajo es asignar misiones a los jugadores con un tono épico y motivador. Las misiones deben ser logrables y emocionantes.
+        Devuélveme únicamente un JSON válido, sin texto adicional ni explicaciones.
+
+        Genera una misión para el siguiente jugador:
+
+        - Dificultad: %s
+        - Categorías estadísticas en las que el jugador es débil: %s
+        - Nivel del jugador: %d
+
+        La misión debe:
+        - Poder completarse en menos de 24 horas.
+        - Tener una descripción inmersiva y clara, como si fuera parte de una historia.
+        - Incluir una meta cuantificable (targetQuantity) como número entero >= 1.
+        - Tener un motivo épico o justificación narrativa en el campo "generationReason".
+
+        Devuelve ÚNICAMENTE un JSON con los siguientes campos:
+        {
+          "title": "...",
+          "description": "...",
+          "targetQuantity": número entero >= 1,
+          "generationReason": "..."
+        }
+        """.formatted(
+                taskDifficulty.name().toLowerCase(),
+                userWeakStats.stream().limit(3).map(Enum::name).collect(Collectors.toList()),
+                userFromDb.getStats().getLevel()
+        );
+
+        String rawContent = iaService.sendRequest(prompt);
+        String cleanedJson = rawContent
+                .replaceAll("(?s)```json\\s*", "")
+                .replaceAll("(?s)```", "")
+                .trim();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> iaData = objectMapper.readValue(cleanedJson, new TypeReference<>() {});
+
+        return Mission.builder()
+                .title((String) iaData.get("title"))
+                .description((String) iaData.get("description"))
+                .difficulty(taskDifficulty)
+                .targetQuantity(((Number) iaData.get("targetQuantity")).intValue())
+                .currentProgress(0)
+                .statsCategories(userWeakStats.stream()
+                        .limit(3)
+                        .collect(Collectors.toSet()))
+                .aiGenerated(true)
+                .xpReward(xp)
+                .generationReason((String) iaData.get("generationReason"))
+                .userLevelAtGeneration(userFromDb.getStats().getLevel())
+                .user(userFromDb)
+                .build();
+    }
+
     /**
      * Create a new mission.
      * This method receives a generated mission and sets up the necessary data for used it in user entity.
      */
-    public Mission createMission(Mission mission) {
+    public Mission recieveMission(Mission mission) {
         if (mission.getAssignedAt() == null) {
             mission.setAssignedAt(LocalDateTime.now());
+            mission.setExpiresAt(LocalDateTime.now().minusDays(1));
         }
         if (mission.getStatus() == null) {
             mission.setStatus(MissionStatus.PENDING);
