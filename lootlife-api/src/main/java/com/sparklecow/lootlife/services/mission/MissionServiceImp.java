@@ -7,6 +7,7 @@ import com.sparklecow.lootlife.models.mission.MissionStatus;
 import com.sparklecow.lootlife.models.stats.StatType;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.repositories.MissionRepository;
+import com.sparklecow.lootlife.services.ia.IAService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,9 +28,9 @@ import java.util.stream.Collectors;
 public class MissionServiceImp implements MissionService{
 
     private final MissionRepository missionRepository;
+    private final IAService iaService;
 
     /*Utils*/
-
     @Override
     public boolean isCompleted(Mission mission) {
         return mission.getStatus() == MissionStatus.COMPLETED;

@@ -16,7 +16,7 @@ public class WebClientConfig {
     @Bean
     public WebClient openRouterWebClient() {
         return WebClient.builder()
-                .baseUrl("https://openrouter.ai/api/v1/chat/completions")
+                .baseUrl("https://openrouter.ai/api/v1")
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + agentKey)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
