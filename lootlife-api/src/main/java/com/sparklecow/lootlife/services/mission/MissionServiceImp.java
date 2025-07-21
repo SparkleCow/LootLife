@@ -12,6 +12,7 @@ import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.repositories.MissionRepository;
 import com.sparklecow.lootlife.repositories.UserRepository;
 import com.sparklecow.lootlife.services.ia.IAService;
+import com.sparklecow.lootlife.services.stats.StatsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -34,6 +35,7 @@ public class MissionServiceImp implements MissionService{
     private final MissionRepository missionRepository;
     private final IAService iaService;
     private final UserRepository userRepository;
+    private final StatsService statsService;
 
     /*Utils*/
     @Override
@@ -63,12 +65,42 @@ public class MissionServiceImp implements MissionService{
                 (mission.getStatus() == MissionStatus.ACTIVE || mission.getStatus() == MissionStatus.PENDING);
     }
 
+    public boolean hasMissionToday(User user) {
+        LocalDateTime startOfDay = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime endOfDay = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
+
+        return missionRepository.existsByUserAndAssignedAtBetween(user, startOfDay, endOfDay);
+    }
+
+    public void cleanExpiredMissions(User user) {
+        List<Mission> oldMissions = missionRepository.findByUserAndStatusIn(user, List.of(MissionStatus.PENDING, MissionStatus.ACTIVE, MissionStatus.CANCELLED));
+
+        for (Mission m : oldMissions) {
+            if (isExpired(m)) {
+                missionRepository.delete(m);
+                log.info("Mission with id {} deleted", m.getId());
+            }
+            if (m.getStatus() == MissionStatus.EXPIRED || m.getStatus() == MissionStatus.CANCELLED){
+                log.info("Mission with id {} deleted", m.getId());
+                missionRepository.delete(m);
+            }
+        }
+    }
+
     /*CRUD Operations*/
 
     public Mission createMission(User user) throws JsonProcessingException {
         User userFromDb = userRepository.findByUsername(user.getUsername()).orElseThrow();
+
+        cleanExpiredMissions(userFromDb);
+
+        if (hasMissionToday(userFromDb)) {
+            throw new IllegalStateException("There is already a mission assigned for today.");
+        }
+
         TaskDifficulty taskDifficulty = suggestDifficultyForUser(userFromDb);
         List<StatType> userWeakStats = analyzeUserWeakStats(userFromDb);
+
         long xp;
         switch (taskDifficulty) {
             case EASY -> xp = 50;
@@ -82,7 +114,10 @@ public class MissionServiceImp implements MissionService{
         Eres un NPC maestro de misiones en un videojuego de gamificación de la vida real.
         Tu trabajo es asignar misiones a los jugadores con un tono épico y motivador. Las misiones deben ser logrables y emocionantes.
         Devuélveme únicamente un JSON válido, sin texto adicional ni explicaciones.
-
+        
+        Sin embargo, las acciones que el jugador debe realizar deben ser completamente posibles en la vida real.
+        Puedes usar metáforas como “dragones”, “hechizos”, “mazmorras”, etc., pero siempre debes explicar cómo se traducen a una acción cotidiana concreta.
+                
         Genera una misión para el siguiente jugador:
 
         - Dificultad: %s
@@ -91,7 +126,9 @@ public class MissionServiceImp implements MissionService{
 
         La misión debe:
         - Poder completarse en menos de 24 horas.
+        - Debe tener una acción clara y realizable: caminar, ordenar, escribir, hacer ejercicio, reflexionar, socializar, etc.
         - Tener una descripción inmersiva y clara, como si fuera parte de una historia.
+        - NO debe pedir cosas imposibles, como hablar con un dragón real, usar magia verdadera, ir a otro mundo, etc.    
         - Incluir una meta cuantificable (targetQuantity) como número entero >= 1.
         - Tener un motivo épico o justificación narrativa en el campo "generationReason".
 
@@ -117,12 +154,18 @@ public class MissionServiceImp implements MissionService{
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> iaData = objectMapper.readValue(cleanedJson, new TypeReference<>() {});
 
-        return Mission.builder()
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endOfDay = now.toLocalDate().atTime(23, 59, 59);
+
+        Mission newMission = Mission.builder()
                 .title((String) iaData.get("title"))
                 .description((String) iaData.get("description"))
                 .difficulty(taskDifficulty)
                 .targetQuantity(((Number) iaData.get("targetQuantity")).intValue())
                 .currentProgress(0)
+                .assignedAt(now)
+                .expiresAt(endOfDay)
+                .status(MissionStatus.PENDING)
                 .statsCategories(userWeakStats.stream()
                         .limit(3)
                         .collect(Collectors.toSet()))
@@ -132,26 +175,10 @@ public class MissionServiceImp implements MissionService{
                 .userLevelAtGeneration(userFromDb.getStats().getLevel())
                 .user(userFromDb)
                 .build();
-    }
 
-    /**
-     * Create a new mission.
-     * This method receives a generated mission and sets up the necessary data for used it in user entity.
-     */
-    public Mission recieveMission(Mission mission) {
-        if (mission.getAssignedAt() == null) {
-            mission.setAssignedAt(LocalDateTime.now());
-            mission.setExpiresAt(LocalDateTime.now().minusDays(1));
-        }
-        if (mission.getStatus() == null) {
-            mission.setStatus(MissionStatus.PENDING);
-        }
-        if (mission.getCurrentProgress() == null) {
-            mission.setCurrentProgress(0);
-        }
+        log.info("Creating new mission: {} for user: {}", newMission.getTitle(), newMission.getUser().getUsername());
 
-        log.info("Creating new mission: {} for user: {}", mission.getTitle(), mission.getUser().getUsername());
-        return missionRepository.save(mission);
+        return missionRepository.save(newMission);
     }
 
     /**
@@ -287,6 +314,7 @@ public class MissionServiceImp implements MissionService{
      */
     public List<StatType> analyzeUserWeakStats(User user) {
         Stats stats = user.getStats();
+        log.info("User stats: {}", stats);
         if (stats == null) {
             return Arrays.asList(StatType.values());
         }
@@ -304,7 +332,7 @@ public class MissionServiceImp implements MissionService{
         int averageLevel = (int) statLevels.values().stream().mapToInt(Integer::intValue).average().orElse(1);
 
         return statLevels.entrySet().stream()
-                .filter(entry -> entry.getValue() < averageLevel)
+                .filter(entry -> entry.getValue() <= averageLevel)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
@@ -400,6 +428,7 @@ public class MissionServiceImp implements MissionService{
      */
     public void cancelAllUserMissions(User user, String reason) {
         List<Mission> activeMissions = getActiveMissions(user);
+        log.info("Active missions for user {}: {}",user.getUsername() ,activeMissions);
 
         for (Mission mission : activeMissions) {
             mission.setStatus(MissionStatus.CANCELLED);

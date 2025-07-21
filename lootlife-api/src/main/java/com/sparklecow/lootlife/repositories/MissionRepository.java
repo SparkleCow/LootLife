@@ -46,4 +46,6 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     // Get user's recent missions for AI analysis
     @Query("SELECT m FROM Mission m WHERE m.user = :user AND m.createdAt >= :sinceDate ORDER BY m.createdAt DESC")
     List<Mission> findRecentMissionsForUser(@Param("user") User user, @Param("sinceDate") LocalDateTime sinceDate);
+
+    Boolean existsByUserAndAssignedAtBetween(User user, LocalDateTime startOfDay, LocalDateTime endOfDay);
 }
