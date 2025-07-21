@@ -6,12 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparklecow.lootlife.entities.Mission;
 import com.sparklecow.lootlife.entities.Stats;
 import com.sparklecow.lootlife.entities.User;
+import com.sparklecow.lootlife.models.mission.MissionResponseDto;
 import com.sparklecow.lootlife.models.mission.MissionStatus;
 import com.sparklecow.lootlife.models.stats.StatType;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.repositories.MissionRepository;
 import com.sparklecow.lootlife.repositories.UserRepository;
 import com.sparklecow.lootlife.services.ia.IAService;
+import com.sparklecow.lootlife.services.mappers.MissionMapper;
 import com.sparklecow.lootlife.services.stats.StatsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ public class MissionServiceImp implements MissionService{
     private final IAService iaService;
     private final UserRepository userRepository;
     private final StatsService statsService;
+    private final MissionMapper missionMapper;
 
     /*Utils*/
     @Override
@@ -80,7 +83,7 @@ public class MissionServiceImp implements MissionService{
                 missionRepository.delete(m);
                 log.info("Mission with id {} deleted", m.getId());
             }
-            if (m.getStatus() == MissionStatus.EXPIRED || m.getStatus() == MissionStatus.CANCELLED){
+            if (m.getStatus() == MissionStatus.CANCELLED){
                 log.info("Mission with id {} deleted", m.getId());
                 missionRepository.delete(m);
             }
@@ -89,7 +92,7 @@ public class MissionServiceImp implements MissionService{
 
     /*CRUD Operations*/
 
-    public Mission createMission(User user) throws JsonProcessingException {
+    public MissionResponseDto createMission(User user) throws JsonProcessingException {
         User userFromDb = userRepository.findByUsername(user.getUsername()).orElseThrow();
 
         cleanExpiredMissions(userFromDb);
@@ -117,7 +120,7 @@ public class MissionServiceImp implements MissionService{
         
         Sin embargo, las acciones que el jugador debe realizar deben ser completamente posibles en la vida real.
         Puedes usar metáforas como “dragones”, “hechizos”, “mazmorras”, etc., pero siempre debes explicar cómo se traducen a una acción cotidiana concreta.
-                
+       
         Genera una misión para el siguiente jugador:
 
         - Dificultad: %s
@@ -177,23 +180,24 @@ public class MissionServiceImp implements MissionService{
                 .build();
 
         log.info("Creating new mission: {} for user: {}", newMission.getTitle(), newMission.getUser().getUsername());
-
-        return missionRepository.save(newMission);
+        return MissionMapper.toDto(missionRepository.save(newMission));
     }
 
     /**
      * Get all user´s missions which are currently assigned
      */
-    public List<Mission> getActiveMissions(User user) {
+    public List<MissionResponseDto> getActiveMissions(User user) {
         List<MissionStatus> activeStatuses = Arrays.asList(MissionStatus.ACTIVE, MissionStatus.PENDING);
-        return missionRepository.findByUserAndStatusIn(user, activeStatuses);
+        Mission mission  = missionRepository.findByUserAndStatusIn(user, activeStatuses).stream().findFirst().get();
+        return List.of(MissionMapper.toDto(mission));
     }
 
     /**
      * Get all user´s missions.
      */
-    public List<Mission> getUserMissions(User user) {
-        return missionRepository.findByUser(user);
+    public List<MissionResponseDto> getUserMissions(User user) {
+        cleanExpiredMissions(user);
+        return missionRepository.findByUser(user).stream().map(MissionMapper::toDto).toList();
     }
 
     /*Mission progress completion*/
@@ -269,32 +273,6 @@ public class MissionServiceImp implements MissionService{
     }
 
     // Mission analytics and stats */
-
-    /**
-     * Get mission stats for a user
-     */
-    public Map<String, Object> getUserMissionStats(User user) {
-
-        Map<String, Object> stats = new HashMap<>();
-
-        // Total missions
-        long totalMissions = missionRepository.countByUserAndStatus(user, MissionStatus.COMPLETED);
-        stats.put("totalCompleted", totalMissions);
-
-        // Active missions count
-        List<Mission> activeMissions = getActiveMissions(user);
-        stats.put("activeMissions", activeMissions.size());
-
-        // Progress summary
-        double avgProgress = activeMissions.stream()
-                .mapToDouble(this::getProgressPercentage)
-                .average()
-                .orElse(0.0);
-        stats.put("averageProgress", Math.round(avgProgress * 100.0) / 100.0);
-
-        return stats;
-    }
-
 
     /**
      * Get missions that will expire soon for notification
@@ -427,7 +405,9 @@ public class MissionServiceImp implements MissionService{
      * It cancels all active user missions
      */
     public void cancelAllUserMissions(User user, String reason) {
-        List<Mission> activeMissions = getActiveMissions(user);
+        List<MissionStatus> activeStatuses = Arrays.asList(MissionStatus.ACTIVE, MissionStatus.PENDING);
+        List<Mission> activeMissions  = missionRepository.findByUserAndStatusIn(user, activeStatuses);
+
         log.info("Active missions for user {}: {}",user.getUsername() ,activeMissions);
 
         for (Mission mission : activeMissions) {

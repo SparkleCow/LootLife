@@ -42,7 +42,7 @@ public class Mission {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 800)
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -89,7 +89,7 @@ public class Mission {
     @Column(name = "ai_generated", nullable = false)
     private Boolean aiGenerated = true;
 
-    @Column(name = "generation_reason", length = 500)
+    @Column(name = "generation_reason", length = 800)
     private String generationReason; // Why this mission was generated (based on user stats/behavior)
 
     @Column(name = "user_level_at_generation")
