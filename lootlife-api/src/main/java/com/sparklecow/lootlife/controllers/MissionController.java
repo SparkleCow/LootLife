@@ -25,19 +25,29 @@ public class MissionController {
     @PostMapping
     public ResponseEntity<MissionResponseDto> generateNewMission(Authentication authentication) throws JsonProcessingException {
         MissionResponseDto responseDto =  missionService.createMission((User) authentication.getPrincipal());
-        URI location = URI.create("/api/missions/" + responseDto.id());
+        URI location = URI.create("/missions/" + responseDto.id());
         return ResponseEntity
                 .created(location)
                 .body(responseDto);
     }
 
+    @PostMapping("/complete/{id}")
+    public ResponseEntity<MissionResponseDto> completeMission(Authentication authentication, @PathVariable Long id){
+        return ResponseEntity.ok(missionService.completeMission((User) authentication.getPrincipal(), id));
+    }
+
+    @PostMapping("/activate/{id}")
+    public ResponseEntity<MissionResponseDto> activateMission(Authentication authentication, @PathVariable Long id){
+        return ResponseEntity.ok(missionService.startMission(id));
+    }
+
     @GetMapping
-    public ResponseEntity<List<MissionResponseDto>> getCurrentMission(Authentication authentication) throws JsonProcessingException {
+    public ResponseEntity<List<MissionResponseDto>> getCurrentMission(Authentication authentication) {
         return ResponseEntity.ok(missionService.getActiveMissions((User) authentication.getPrincipal()));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<MissionResponseDto>> getAllMission(Authentication authentication) throws JsonProcessingException {
+    public ResponseEntity<List<MissionResponseDto>> getAllMission(Authentication authentication) {
         return ResponseEntity.ok(missionService.getUserMissions((User) authentication.getPrincipal()));
     }
 

@@ -58,6 +58,10 @@ export class AppComponent {
     this.router.navigate(['/task']);
   }
 
+  redirectAtMission(){
+    this.router.navigate(['/mission']);
+  }
+
   getRandomSongUrl(): string {
     const randomIndex = Math.floor(Math.random() * this.songs.length);
     return this.songs[randomIndex].songUrl;

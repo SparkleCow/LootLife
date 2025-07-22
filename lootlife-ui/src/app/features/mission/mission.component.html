@@ -1,0 +1,31 @@
+<div class="mission-container">
+
+  <div class="mission-card-1 ia-card">
+    <div class="mission-gif" style="background-image: url('/akane.gif');"></div>
+    <div class="mission-title">Spark - Asistente</div>
+    <div class="mission-info">
+      <p>👾 ¡Hola, {{ username || 'héroe' }}!</p>
+      <p>Tu misión ha sido generada con precisión cuántica.<br>
+      ¡Buena suerte y no olvides hidratarte! 💧</p>
+      <p>Estoy monitoreando tu progreso desde la Nebulosa Sparkle 🪐.</p>
+    </div>
+  </div>
+
+  <div class="mission-card-2">
+    <div class="mission-gif" style="background-image: url('https://media.giphy.com/media/YQitE4YNQNahy/giphy.gif');"></div>
+    <div class="mission-title">{{ mission.title }}</div>
+    <div class="mission-info">
+      <strong>Descripción:</strong> {{ mission.description }}<br>
+      <strong>Dificultad:</strong> {{ mission.difficulty }}<br>
+      <strong>Estado:</strong> {{ mission.status }}<br>
+      <strong>Recompensa XP:</strong> {{ mission.xpReward }} (+{{ mission.bonusXpReward }})<br>
+      <strong>Progreso:</strong> {{ mission.currentProgress }} / {{ mission.targetQuantity }}<br>
+      <strong>Expira:</strong> {{ mission.expiresAt | date:'short' }}
+    </div>
+    <div class="mission-buttons">
+      <button (click)="acceptMission()">Aceptar</button>
+      <button (click)="cancelMission()">Cancelar</button>
+      <button (click)="completeMission()">Completar</button>
+    </div>
+  </div>
+</div>

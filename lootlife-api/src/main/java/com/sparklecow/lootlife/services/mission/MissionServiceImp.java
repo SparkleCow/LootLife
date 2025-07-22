@@ -18,14 +18,12 @@ import com.sparklecow.lootlife.services.stats.StatsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -221,11 +219,12 @@ public class MissionServiceImp implements MissionService{
             mission.setStartedAt(LocalDateTime.now());
         }
 
+        //TODO
         // Check if the mission is now completed
-        if (mission.getTargetQuantity() != null &&
+        /*if (mission.getTargetQuantity() != null &&
                 mission.getCurrentProgress() >= mission.getTargetQuantity()) {
             completeMission(mission);
-        }
+        }*/
 
         log.info("Updated mission progress: {} - {}/{}",
                 mission.getTitle(), mission.getCurrentProgress(), mission.getTargetQuantity());
@@ -234,9 +233,21 @@ public class MissionServiceImp implements MissionService{
     }
 
 
-    public Mission completeMission(Mission mission) {
-        if (!canBeCompleted(mission)) {
+    public MissionResponseDto completeMission(User user, Long id) {
+        Mission mission = missionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mission with ID " + id + " not found."));
+
+        //Open a new Hibernate user session
+        User userFromDb = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User with ID " + user.getId() + " not found."));
+
+        if(!canBeCompleted(mission)) {
             throw new RuntimeException("Mission cannot be completed: " + mission.getStatus());
+        }
+
+        //Validate that the logged user is the mission owner
+        if (!Objects.equals(mission.getUser().getId(), userFromDb.getId())) {
+            throw new RuntimeException("User " + user.getUsername() + " is not the owner of this mission.");
         }
 
         mission.setStatus(MissionStatus.COMPLETED);
@@ -247,13 +258,27 @@ public class MissionServiceImp implements MissionService{
             mission.setCurrentProgress(mission.getTargetQuantity());
         }
 
+        statsService.addLevelExperience(userFromDb.getStats(), mission.getXpReward());
+
+        for(StatType stat: mission.getStatsCategories()){
+            statsService.addExperienceToSingleStat(userFromDb.getStats(), stat, mission.getXpReward());
+        }
+
         log.info("Mission completed: {} by user: {}", mission.getTitle(), mission.getUser().getUsername());
-        return missionRepository.save(mission);
+        return MissionMapper.toDto(missionRepository.save(mission));
     }
 
-    public Mission startMission(Long missionId) {
+    public MissionResponseDto startMission(User user, Long missionId) {
+
+        User userFromDb = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User with ID " + user.getId() + " not found."));
+
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new RuntimeException("Mission not found"));
+
+        if(userFromDb.getId()!=mission.getUser().getId()){
+            throw new RuntimeException("User " + user.getUsername() + " is not the owner of this mission.");
+        }
 
         if (mission.getStatus() != MissionStatus.PENDING) {
             throw new RuntimeException("Mission cannot be started: " + mission.getStatus());
@@ -269,7 +294,7 @@ public class MissionServiceImp implements MissionService{
         mission.setStartedAt(LocalDateTime.now());
 
         log.info("Mission started: {} by user: {}", mission.getTitle(), mission.getUser().getUsername());
-        return missionRepository.save(mission);
+        return MissionMapper.toDto(missionRepository.save(mission));
     }
 
     // Mission analytics and stats */

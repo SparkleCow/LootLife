@@ -1,0 +1,71 @@
+.mission-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+.mission-card-1 {
+  background-color: rgba(131, 33, 121, 0.95);
+  border: 5px outset rgba(152, 44, 141, 0.95);
+  padding: 20px;
+  width: 350px;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.mission-card-2{
+  background-color: rgba(131, 33, 121, 0.95);
+  border: 5px outset rgba(152, 44, 141, 0.95);
+  max-width: 600px;
+  padding: 20px;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.mission-gif {
+  width: 100%;
+  height: 200px;
+  background-color: #000;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.mission-title {
+  font-size: 1.5rem;
+  color: #ffccff;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.mission-info {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.mission-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mission-buttons button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.mission-buttons button:hover {
+  background-color: #45a049;
+}
+

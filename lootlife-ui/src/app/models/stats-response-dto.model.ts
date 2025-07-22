@@ -38,8 +38,10 @@ export interface StatsResponseDto {
 
 export enum StatType {
   STRENGTH = 'STRENGTH',
-  AGILITY = 'AGILITY',
   INTELLIGENCE = 'INTELLIGENCE',
-  ENDURANCE = 'ENDURANCE',
+  WISDOM = 'WISDOM',
+  CHARISMA = 'CHARISMA',
+  DEXTERITY = 'DEXTERITY',
+  CONSTITUTION =  'CONSTITUTION',
   LUCK = 'LUCK'
 }

@@ -6,6 +6,7 @@ import { WindowComponent } from '../../../shared/window/window.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoginRequest } from '../../../models/login-request-dto.model';
 import { AuthResponse } from '../../../models/auth-response.model';
+import { MissionService } from '../../../core/services/mission.service';
 
 @Component({
   selector: 'app-login',
@@ -25,8 +26,9 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
+    private _authService: AuthService,
+    private router: Router,
+    private _missionService: MissionService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -42,9 +44,17 @@ export class LoginComponent {
         password: this.loginForm.value.password
       };
 
-      this.authService.$loginUser(loginRequest).subscribe({
+      this._authService.$loginUser(loginRequest).subscribe({
         next: (response: AuthResponse) => {
-          this.authService.saveToken(response);
+          this._authService.saveToken(response);
+          this._missionService.$createMission().subscribe({
+            next: (mission) => {
+              console.log('Misión creada:', mission);
+            },
+            error: (err) => {
+              console.error('Error al crear misión:', err);
+            }
+          });
           console.log(loginRequest);
           alert('¡Inicio de sesión exitoso!');
           this.router.navigate(['']);
