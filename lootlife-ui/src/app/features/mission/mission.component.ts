@@ -4,11 +4,12 @@ import { MissionResponseDto, MissionStatus } from '../../models/mission-response
 import { TaskDifficulty } from '../../models/task-request-dto.model';
 import { StatType } from '../../models/stats-response-dto.model';
 import { CommonModule } from '@angular/common';
+import { WindowComponent } from "../../shared/window/window.component";
 
 @Component({
   selector: 'app-mission',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, WindowComponent, WindowComponent],
   templateUrl: './mission.component.html',
   styleUrl: './mission.component.css'
 })
