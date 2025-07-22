@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit{
   }
 
   getUserInformation(){
-    this._userService.getUserInformation().subscribe({
+    this._userService.$getUserInformation().subscribe({
             next: (response: UserResponseDto) => {
               console.log(response);
               this.userLogged=response;

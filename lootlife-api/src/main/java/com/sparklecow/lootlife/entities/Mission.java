@@ -83,6 +83,8 @@ public class Mission {
     )
     @Column(name = "stat_category")
     @Size(max = 3, message = "A mission cannot have more than 3 stat categories")
+    @org.hibernate.annotations.OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
+
     private Set<StatType> statsCategories = new HashSet<>();
 
     // AI Generation metadata

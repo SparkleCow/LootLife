@@ -23,9 +23,22 @@
       <strong>Expira:</strong> {{ mission.expiresAt | date:'short' }}
     </div>
     <div class="mission-buttons">
-      <button (click)="acceptMission()">Aceptar</button>
-      <button (click)="cancelMission()">Cancelar</button>
-      <button (click)="completeMission()">Completar</button>
+
+      <button
+        *ngIf="mission.status === MissionStatus.PENDING"
+        (click)="acceptMission()">
+        Aceptar
+      </button>
+
+      <ng-container *ngIf="mission.status === MissionStatus.ACTIVE">
+        <button (click)="cancelMission()">Cancelar</button>
+        <button (click)="completeMission()">Completar</button>
+      </ng-container>
+
+      <ng-container *ngIf="mission.status === MissionStatus.COMPLETED">
+        <p>✅ Misión completada</p>
+      </ng-container>
+
     </div>
   </div>
 </div>

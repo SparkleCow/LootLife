@@ -56,4 +56,17 @@ export class MissionService {
   $getAllMissions(): Observable<MissionResponseDto[]>{
     return this.http.get<MissionResponseDto[]>(`${this.baseUrl}/all`).pipe(catchError(this.handleError));
   }
+
+  $completeMission(id:number): Observable<MissionResponseDto>{
+    return this.http.post<MissionResponseDto>(`${this.baseUrl}/complete/${id}`, {}).pipe(catchError(this.handleError));
+  }
+
+  $activateMission(id: number): Observable<MissionResponseDto> {
+    return this.http.post<MissionResponseDto>(`${this.baseUrl}/activate/${id}`, {}).pipe(catchError(this.handleError));
+  }
+
+  $cancelMission(id: number): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/cancel/${id}`, {}).pipe(catchError(this.handleError));
+  }
 }
+

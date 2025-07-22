@@ -1,11 +1,17 @@
 <div class="home-container">
   <aside class="menu">
-    <ul (click)="redirectAtLogin()"><img src="/login.gif"/>Loguearse</ul>
-    <ul (click)="redirectAtRegister()"><img src="/register.png"/>Registrarse</ul>
+    <ul *ngIf="!isLogged" (click)="redirectAtLogin()">
+      <img src="/login.gif"/> Loguearse
+    </ul>
+    <ul *ngIf="!isLogged" (click)="redirectAtRegister()">
+      <img src="/register.png"/> Registrarse
+    </ul>
     <ul (click)="redirectAtTask()"><img src="/task.png"/>Tareas</ul>
     <ul (click)="redirectAtMission()"><img src="/missions.gif"/>Misiones</ul>
     <ul (click)="redirectAtProfile()"><img src="/account2.gif"/>Estadisticas</ul>
-    <ul><img src="/perfil.gif"/>Perfil</ul>
+    <ul *ngIf="isLogged">
+      <img src="/perfil.gif"/> Bienvenido <br>{{ username }}
+    </ul>
     <div class="gif-container" (click)="playRandomSong()">
       <img src="/music.gif" alt="Gif vaporwave" class="vaporwave-gif">
       <div class="gif-text">🎵 Click para música</div>
@@ -19,5 +25,9 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+
+
+
+
 
 

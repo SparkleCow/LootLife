@@ -9,8 +9,6 @@ import com.sparklecow.lootlife.services.mappers.StatsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.function.UnaryOperator;
-
 @Service
 @RequiredArgsConstructor
 public class StatsServiceImp implements StatsService{
@@ -59,6 +57,7 @@ public class StatsServiceImp implements StatsService{
                         .build()
         );
     }
+
 
     @Override
     public StatsResponseDto findStatsByUser(User user) {
@@ -280,5 +279,11 @@ public class StatsServiceImp implements StatsService{
         stats.setTotalMissionsCompleted(0);
 
         statsRepository.save(stats);
+    }
+
+    @Override
+    public Stats addMissionComplete(Stats stats) {
+        stats.setTotalMissionsCompleted(stats.getTotalMissionsCompleted() + 1);
+        return statsRepository.save(stats);
     }
 }

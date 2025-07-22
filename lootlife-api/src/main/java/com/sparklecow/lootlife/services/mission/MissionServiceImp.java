@@ -264,6 +264,7 @@ public class MissionServiceImp implements MissionService{
             statsService.addExperienceToSingleStat(userFromDb.getStats(), stat, mission.getXpReward());
         }
 
+        statsService.addMissionComplete(userFromDb.getStats());
         log.info("Mission completed: {} by user: {}", mission.getTitle(), mission.getUser().getUsername());
         return MissionMapper.toDto(missionRepository.save(mission));
     }
@@ -276,7 +277,7 @@ public class MissionServiceImp implements MissionService{
         Mission mission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new RuntimeException("Mission not found"));
 
-        if(userFromDb.getId()!=mission.getUser().getId()){
+        if(!Objects.equals(userFromDb.getId(), mission.getUser().getId())){
             throw new RuntimeException("User " + user.getUsername() + " is not the owner of this mission.");
         }
 
@@ -295,6 +296,26 @@ public class MissionServiceImp implements MissionService{
 
         log.info("Mission started: {} by user: {}", mission.getTitle(), mission.getUser().getUsername());
         return MissionMapper.toDto(missionRepository.save(mission));
+    }
+
+    public void cancelMission(User user, Long id, String reason) {
+        Mission mission = missionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mission with ID " + id + " not found."));
+
+        if (!mission.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("User " + user.getUsername() + " is not the owner of this mission.");
+        }
+
+        if (mission.getStatus() != MissionStatus.ACTIVE) {
+            throw new RuntimeException("Only ACTIVE missions can be cancelled. Current status: " + mission.getStatus());
+        }
+
+        mission.setStatus(MissionStatus.CANCELLED);
+        mission.setValidationNotes(reason);
+
+        missionRepository.save(mission);
+
+        log.info("Mission '{}' cancelled for user: {}. Reason: {}", mission.getTitle(), user.getUsername(), reason);
     }
 
     // Mission analytics and stats */

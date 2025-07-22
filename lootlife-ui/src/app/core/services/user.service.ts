@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 import { UserResponseDto } from '../../models/user-response-dto.model';
 
 @Injectable({
@@ -8,9 +8,13 @@ import { UserResponseDto } from '../../models/user-response-dto.model';
 })
 export class UserService {
 
-  private baseUrl: string = 'http://localhost:8080/user'
+ private baseUrl: string = 'http://localhost:8080/user';
 
-  constructor(private http:HttpClient) {}
+  private userSubject = new BehaviorSubject<UserResponseDto | null>(null);
+
+  public user$ = this.userSubject.asObservable();
+
+  constructor(private http: HttpClient) {}
 
   /**
   *Generic http handler
@@ -20,12 +24,9 @@ export class UserService {
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Ocurrió un error desconocido.';
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente o de red
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // El backend retornó un código de respuesta de error (ej. 400, 404, 500)
       if (error.status === 400 && error.error && typeof error.error === 'object') {
-        // Si el backend envía un objeto de errores de validación
         errorMessage = 'Errores de validación:';
         for (const key in error.error) {
           if (Object.prototype.hasOwnProperty.call(error.error, key)) {
@@ -33,19 +34,29 @@ export class UserService {
           }
         }
       } else if (error.error && typeof error.error === 'string') {
-        // Si el backend envía un mensaje de error en texto plano
         errorMessage = `Error del servidor (${error.status}): ${error.error}`;
       } else {
-        // Otra estructura de error del backend
         errorMessage = `El servidor retornó un código ${error.status}: ${error.message}`;
       }
     }
     console.error(errorMessage);
-    // Retorna un observable con un mensaje de error que el componente puede manejar
     return throwError(() => new Error(errorMessage));
   }
 
-  getUserInformation() : Observable<UserResponseDto>{
+
+  fetchUserInformation(): void {
+    this.http.get<UserResponseDto>(this.baseUrl)
+      .pipe(catchError(this.handleError))
+      .subscribe({
+        next: (userData) => this.userSubject.next(userData),
+        error: (err) => {
+          console.error('Error al obtener información del usuario:', err.message);
+          this.userSubject.next(null); // Opcional: resetear usuario en error
+        }
+      });
+  }
+
+  $getUserInformation(): Observable<UserResponseDto> {
     return this.http.get<UserResponseDto>(this.baseUrl).pipe(catchError(this.handleError));
   }
 }

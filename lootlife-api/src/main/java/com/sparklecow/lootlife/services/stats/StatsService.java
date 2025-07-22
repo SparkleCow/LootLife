@@ -51,4 +51,6 @@ public interface StatsService {
       * Resets all stats to default values (e.g. level = 0, xp = 0).
       */
      void resetStats(Stats stats);
+
+     Stats addMissionComplete(Stats stats);
 }

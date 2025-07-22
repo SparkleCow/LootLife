@@ -1,14 +1,16 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
+import { UserService } from './core/services/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
 
   @ViewChild('audioPlayer', { static: false }) audioPlayer!: ElementRef<HTMLAudioElement>;
 
@@ -36,11 +38,32 @@ export class AppComponent {
     },
     {
       songUrl: "https://lootlife-bucket.s3.us-east-1.amazonaws.com/ESPRIT+%E7%A9%BA%E6%83%B3%2C+George+Clanton+-+Warmpop+-+100+Electronica.mp3",
-      songName: " George Clanton - Warmpop"
+      songName: "George Clanton - Warmpop"
     }
   ]
 
-  constructor(private router:Router){}
+  isLogged = false;
+  username?: string;
+
+  constructor(private injector: Injector, private router: Router) {}
+
+  ngOnInit(): void {
+    const userService = this.injector.get(UserService);
+
+    // Nos suscribimos al estado reactivo
+    userService.user$.subscribe(user => {
+      if (user) {
+        this.isLogged = true;
+        this.username = user.username;
+      } else {
+        this.isLogged = false;
+        this.username = undefined;
+      }
+    });
+
+    // Hacer la petición solo una vez al inicio
+    userService.fetchUserInformation();
+  }
 
   redirectAtLogin(){
     this.router.navigate(['/auth/login']);

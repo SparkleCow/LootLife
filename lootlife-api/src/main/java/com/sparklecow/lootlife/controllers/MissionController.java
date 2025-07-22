@@ -38,7 +38,13 @@ public class MissionController {
 
     @PostMapping("/activate/{id}")
     public ResponseEntity<MissionResponseDto> activateMission(Authentication authentication, @PathVariable Long id){
-        return ResponseEntity.ok(missionService.startMission(id));
+        return ResponseEntity.ok(missionService.startMission((User) authentication.getPrincipal(), id));
+    }
+
+    @PostMapping("/cancel/{id}")
+    public ResponseEntity<MissionResponseDto> cancelMission(Authentication authentication, @PathVariable Long id){
+        missionService.cancelMission((User) authentication.getPrincipal(), id, "Mission canceled by user");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
