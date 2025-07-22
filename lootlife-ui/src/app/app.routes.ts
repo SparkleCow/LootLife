@@ -8,8 +8,7 @@ import { TaskComponent } from './features/task/task.component';
 import { MissionComponent } from './features/mission/mission.component';
 
 export const routes: Routes = [
-  { path: '', component: MainComponent, pathMatch: 'full' },
-  { path: 'register', component: RegisterComponent },
+  { path: '', component: MainComponent},
   {
     path: 'auth',
     component: AuthComponent,

@@ -145,3 +145,39 @@ ul:hover{
   height: 95vh;
   position: relative;
 }
+
+.menu-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 1rem;
+  color: #ffffff;
+  text-align: center;
+}
+
+.menu-subtitle {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin: 0 1rem 1.5rem;
+  text-align: center;
+}
+
+.title {
+  background: linear-gradient(45deg, #ff00ff, #00ffff, #eeff00);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: lootlife-gradient 4s ease infinite;
+}
+
+@keyframes lootlife-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -14,12 +14,13 @@ import reactor.netty.http.client.HttpClient;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+/*This class uses WebFlux for HTTP request at OpenRouter in order to link the app with an IA agent*/
 @Configuration
 public class WebClientConfig {
 
+    /*This value is the OpenRouter API Key*/
     @Value("${application.ia_agent.spark}")
     private String agentKey;
-
 
     @Bean
     public WebClient webClient(WebClient.Builder builder) {

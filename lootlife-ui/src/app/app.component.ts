@@ -50,7 +50,6 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     const userService = this.injector.get(UserService);
 
-    // Nos suscribimos al estado reactivo
     userService.user$.subscribe(user => {
       if (user) {
         this.isLogged = true;
@@ -61,8 +60,11 @@ export class AppComponent implements OnInit{
       }
     });
 
-    // Hacer la petición solo una vez al inicio
     userService.fetchUserInformation();
+  }
+
+  redirectAtMain(){
+    this.router.navigate([''], { replaceUrl: true });
   }
 
   redirectAtLogin(){

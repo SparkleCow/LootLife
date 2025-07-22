@@ -9,7 +9,7 @@ import { WindowComponent } from "../../shared/window/window.component";
 @Component({
   selector: 'app-mission',
   standalone: true,
-  imports: [CommonModule, WindowComponent, WindowComponent],
+  imports: [CommonModule],
   templateUrl: './mission.component.html',
   styleUrl: './mission.component.css'
 })

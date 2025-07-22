@@ -50,10 +50,6 @@ public class SecurityFilterConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
-                        /*.authorizationEndpoint(authorization -> authorization
-                                .baseUri("/oauth2/authorize")
-                        )*/
-                        //http://localhost:8080/oauth2/authorization/github TODO Remove this
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )
@@ -76,14 +72,14 @@ public class SecurityFilterConfig {
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Código 401
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Code 401
                             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                             Map<String, Object> errorDetails = new HashMap<>();
                             errorDetails.put("message", "Acceso no autorizado. Por favor inicie sesión o use OAuth2.");
                             errorDetails.put("status", HttpServletResponse.SC_UNAUTHORIZED);
                             new ObjectMapper().writeValue(response.getWriter(), errorDetails);
                         })
-                        // Este handler se usa cuando un usuario AUTENTICADO NO tiene permisos para un recurso (403)
+                        // This handler is used when an authenticated user is not allowed to access to a resource (Code 403)
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN); // Código 403
                             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -1,14 +1,19 @@
 <div class="home-container">
   <aside class="menu">
+    <h2 class="menu-title">Bienvenido a <b class="title">LootLife</b></h2>
+    <p class="menu-subtitle">Gamifica tu vida, completa tus metas</p>
+    <ul *ngIf="!isLogged" (click)="redirectAtMain()">
+      <img src="https://images.vexels.com/media/users/3/136189/isolated/preview/8aff3574eabda894d8f7484bf8e81a6e-icono-de-casa-casa-azul.png"/> Home
+    </ul>
     <ul *ngIf="!isLogged" (click)="redirectAtLogin()">
       <img src="/login.gif"/> Loguearse
     </ul>
     <ul *ngIf="!isLogged" (click)="redirectAtRegister()">
       <img src="/register.png"/> Registrarse
     </ul>
-    <ul (click)="redirectAtTask()"><img src="/task.png"/>Tareas</ul>
-    <ul (click)="redirectAtMission()"><img src="/missions.gif"/>Misiones</ul>
-    <ul (click)="redirectAtProfile()"><img src="/account2.gif"/>Estadisticas</ul>
+    <ul *ngIf="isLogged" (click)="redirectAtTask()"><img src="/task.png"/>Tareas</ul>
+    <ul *ngIf="isLogged" (click)="redirectAtMission()"><img src="/missions.gif"/>Misiones</ul>
+    <ul *ngIf="isLogged" (click)="redirectAtProfile()"><img src="/account2.gif"/>Estadisticas</ul>
     <ul *ngIf="isLogged">
       <img src="/perfil.gif"/> Bienvenido <br>{{ username }}
     </ul>
