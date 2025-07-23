@@ -1,4 +1,4 @@
-package com.sparklecow.lootlife.exceptions;
+package com.sparklecow.lootlife.exceptions.auth;
 
 public class UserNotFoundException extends RuntimeException {
 

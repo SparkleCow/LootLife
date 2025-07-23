@@ -6,14 +6,17 @@ import { Component, HostListener, Input, input, OnInit } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './window.component.html',
-  styleUrl: './window.component.css',
+  styleUrl: './window.component.css'}
+)
+
+export class WindowComponent implements OnInit {
+
+  /*,
   host: {
     '[style.position]': "'absolute'",
     '[style.left.px]': 'posX',
     '[style.top.px]': 'posY'
-  }})
-
-export class WindowComponent implements OnInit {
+  }*/
 
   imageRoute = input<string>('');
   @Input() startLeft:number = 0;

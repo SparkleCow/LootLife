@@ -1,56 +1,48 @@
 <div class="main-container">
 
-  <app-window
-    [title]='"Spark"'
-    [imageRoute]='"/ia.gif"'
-    [startLeft]="350"
-    [startTop]="0">
-    <div class="welcome-container">
-      <h2 class="welcome-title">Spark IA</h2>
-      <p class="welcome-text">
-       Te da misiones, te motiva y convierte tu día en aventura.
-      </p>
-    </div>
-  </app-window>
-
-  <app-window
+  <app-window class="window"
     [title]='"Lootlife"'
-    [imageRoute]='"https://i.imgur.com/J0Y6aiP.gif"'
-    [startLeft]="1050"
-    [startTop]="0">
-    <div class="welcome-container">
-      <h2 class="welcome-title">Tu héroe diario</h2>
-      <p class="welcome-text">
-        Personaliza tu perfil, sube de nivel con hábitos saludables y desbloquea logros.
-      </p>
-    </div>
-  </app-window>
-
-  <app-window
-    [title]='"Actividades"'
-    [imageRoute]='"https://i0.wp.com/therabbitsociety.com/wp-content/uploads/2018/11/Runescape.gif?fit=500%2C378&ssl=1"'
-    [startLeft]="700"
-    [startTop]="0">
-    <div class="welcome-container">
-      <h2 class="welcome-title">¿Qué puedes hacer?</h2>
-      <ul class="welcome-text">
-        <li>Organiza tus tareas diarias</li>
-        <li>Acepta misiones personalizadas</li>
-        <li>Gana experiencia y sube de nivel</li>
-        <li>Visualiza tus estadísticas de progreso</li>
-      </ul>
-    </div>
-  </app-window>
-
-  <app-window
-    [title]='"Lootlife"'
-    [imageRoute]='"/girl.gif"'
-    [startLeft]="0"
-    [startTop]="0">
+    [imageRoute]='"/girl.gif"'>
     <div class="welcome-container">
       <h2 class="welcome-title">¡Bienvenido a Lootlife!</h2>
       <p class="welcome-text">
         Explora, crea y disfruta de nuevas aventuras en nuestra plataforma.
+      </p>
+    </div>
+  </app-window>
+
+  <app-window class="window"
+    [title]='"Actividades"'
+    [imageRoute]='"https://i0.wp.com/therabbitsociety.com/wp-content/uploads/2018/11/Runescape.gif?fit=500%2C378&ssl=1"'>
+    <div class="welcome-container">
+      <h2 class="welcome-title">¿Qué puedes hacer?</h2>
+      <ul class="welcome-text">
+        <li>Organiza tus tareas</li>
+        <li>Acepta misiones</li>
+        <li>Gana experiencia y sube de nivel</li>
+        <li>Visualiza tu progreso</li>
+      </ul>
+    </div>
+  </app-window>
+
+  <app-window class="window"
+      [title]='"Spark"'
+      [imageRoute]='"/ia.gif"'>
+      <div class="welcome-container">
+        <h2 class="welcome-title">Spark IA</h2>
+      <p class="welcome-text">
+        Te da misiones, te motiva y convierte tu día en aventura.
+        </p>
+      </div>
+  </app-window>
+
+  <app-window class="window"
+    [title]='"Lootlife"'
+    [imageRoute]='"https://i.imgur.com/J0Y6aiP.gif"'>
+    <div class="welcome-container">
+      <h2 class="welcome-title">Tu héroe diario</h2>
+      <p class="welcome-text">
+        Sube de nivel con hábitos saludables y desbloquea logros.
       </p>
     </div>
   </app-window>

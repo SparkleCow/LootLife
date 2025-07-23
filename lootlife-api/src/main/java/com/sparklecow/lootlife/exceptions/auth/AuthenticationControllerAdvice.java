@@ -1,6 +1,7 @@
-package com.sparklecow.lootlife.exceptions;
+package com.sparklecow.lootlife.exceptions.auth;
 
 import com.sparklecow.lootlife.controllers.AuthController;
+import com.sparklecow.lootlife.exceptions.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -13,26 +14,6 @@ import static com.sparklecow.lootlife.models.exception.BusinessErrorCodes.*;
 @Slf4j
 @RestControllerAdvice(assignableTypes = AuthController.class)
 public class AuthenticationControllerAdvice {
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException ex) {
-        StringBuilder errorMessages = new StringBuilder();
-
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errorMessages.append(error.getField())
-                    .append(": ")
-                    .append(error.getDefaultMessage())
-                    .append("; ");
-        });
-
-        return ResponseEntity
-                .status(VALIDATION_ERROR.getHttpStatus())
-                .body(ExceptionResponse.builder()
-                        .businessErrorCode(VALIDATION_ERROR.getErrorCode())
-                        .businessErrorDescription(VALIDATION_ERROR.getMessage() + errorMessages)
-                        .message(ex.getMessage())
-                        .build());
-    }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ExceptionResponse> handleAuthenticationException(AuthenticationException e){

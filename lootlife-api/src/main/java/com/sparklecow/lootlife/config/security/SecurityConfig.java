@@ -1,5 +1,6 @@
 package com.sparklecow.lootlife.config.security;
 
+import com.sparklecow.lootlife.exceptions.auth.UserNotFoundException;
 import com.sparklecow.lootlife.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +31,7 @@ public class SecurityConfig {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User with name "+username+" not found"));
+                return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User with name "+username+" not found"));
             }
         };
     }

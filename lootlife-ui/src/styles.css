@@ -12,3 +12,10 @@ html, body {
   padding: 0;
   overflow-x: hidden;
 }
+
+body {
+  margin: 0;
+  background-image: url('/backgroundMain.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+}

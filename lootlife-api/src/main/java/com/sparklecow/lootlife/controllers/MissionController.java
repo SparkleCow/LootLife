@@ -1,7 +1,6 @@
 package com.sparklecow.lootlife.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sparklecow.lootlife.entities.Mission;
 import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.models.mission.MissionResponseDto;
 import com.sparklecow.lootlife.services.mission.MissionServiceImp;
@@ -17,7 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mission")
-@Slf4j
+@CrossOrigin("*")
 public class MissionController {
 
     private final MissionServiceImp missionService;

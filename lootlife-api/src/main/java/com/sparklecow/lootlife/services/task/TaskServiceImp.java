@@ -3,6 +3,9 @@ package com.sparklecow.lootlife.services.task;
 import com.sparklecow.lootlife.entities.Stats;
 import com.sparklecow.lootlife.entities.Task;
 import com.sparklecow.lootlife.entities.User;
+import com.sparklecow.lootlife.exceptions.ForbiddenActionException;
+import com.sparklecow.lootlife.exceptions.auth.UserNotFoundException;
+import com.sparklecow.lootlife.exceptions.task.TaskNotFoundException;
 import com.sparklecow.lootlife.models.stats.StatType;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.models.task.TaskRequestDto;
@@ -33,7 +36,7 @@ public class TaskServiceImp implements TaskService {
     @Transactional
     public TaskResponseDto createTask(User user, TaskRequestDto taskRequestDto) {
         User persistentUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         Task task = taskMapper.toEntity(taskRequestDto, persistentUser);
         taskRepository.save(task);
         return taskMapper.toResponseDto(task);
@@ -52,18 +55,18 @@ public class TaskServiceImp implements TaskService {
     @Override
     public TaskResponseDto findTaskByUserAndId(User user, Long id) {
         User persistentUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         Optional<Task> task = persistentUser.getTasks().stream().filter(x -> x.getId().equals(id)).findFirst();
-        return task.map(taskMapper::toResponseDto).orElseThrow(() -> new RuntimeException("Task not found"));
+        return task.map(taskMapper::toResponseDto).orElseThrow(() -> new TaskNotFoundException("Task not found with id: "+id));
     }
 
     @Override
     @Transactional
     public TaskResponseDto updateTask(User user, Long id, TaskUpdateDto taskUpdateDto) {
-        Task taskOpt = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("This task does not exist"));
+        Task taskOpt = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task not found with id: "+id));
 
         if (!taskOpt.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("This user is not the owner of this task");
+            throw new ForbiddenActionException("This user is not the owner of this task");
         }
 
         Task task = taskMapper.updateEntity(taskOpt, taskUpdateDto);
@@ -74,14 +77,14 @@ public class TaskServiceImp implements TaskService {
     @Transactional
     public void completeTask(User user, Long id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("This task does not exist"));
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: "+id));
 
         // Load a fresh user from the DB
         User userOpt = userRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("User with id: " + user.getId() + " not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + user.getId() + " not found"));
 
         if (!task.getUser().getId().equals(userOpt.getId())) {
-            throw new RuntimeException("This user is not the owner of this task");
+            throw new ForbiddenActionException("This user is not the owner of this task");
         }
 
         Stats userStats = userOpt.getStats();
@@ -105,10 +108,10 @@ public class TaskServiceImp implements TaskService {
     @Transactional
     public void deleteTask(User user, Long id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("This task does not exist"));
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: "+id));
 
         if (!task.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("This user is not the owner of this task");
+            throw new ForbiddenActionException("This user is not the owner of this task");
         }
         taskRepository.delete(task);
     }

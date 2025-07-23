@@ -4,7 +4,7 @@ import com.sparklecow.lootlife.config.jwt.JwtUtils;
 import com.sparklecow.lootlife.entities.Role;
 import com.sparklecow.lootlife.entities.Token;
 import com.sparklecow.lootlife.entities.User;
-import com.sparklecow.lootlife.exceptions.*;
+import com.sparklecow.lootlife.exceptions.auth.*;
 import com.sparklecow.lootlife.models.email.EmailTemplateName;
 import com.sparklecow.lootlife.models.role.RoleName;
 import com.sparklecow.lootlife.models.user.AuthenticationRequestDto;

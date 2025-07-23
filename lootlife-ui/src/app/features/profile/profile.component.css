@@ -18,6 +18,27 @@
   flex-direction: column;
 }
 
+.username{
+  background: linear-gradient(45deg, #1c0fcc, #06ec8d, #eeff00);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: lootlife-gradient 4s ease infinite;
+}
+
+@keyframes lootlife-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .profile-header{
   display: flex;
   flex-direction: column;

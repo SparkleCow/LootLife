@@ -84,7 +84,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setOauth2Provider(registrationId);
             user.setEnabled(true);
             user.setVerified(true);
-            log.info("The oauth user is {}", user.getUsername());
             userRepository.save(user);
         } else {
             user = User.builder()
@@ -97,7 +96,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .isVerified(true)
                     .stats(statsService.createStats())
                     .build();
-            log.info("The oauth user is {}", user.getUsername());
             userRepository.save(user);
         }
         //CustomOauth2User is a wrapper that contains oauth2User and user information.
