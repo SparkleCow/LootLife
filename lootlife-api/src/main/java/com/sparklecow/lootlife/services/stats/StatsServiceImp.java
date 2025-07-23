@@ -19,8 +19,7 @@ public class StatsServiceImp implements StatsService{
 
     @Override
     public Stats createStats() {
-        return statsRepository.save(
-                Stats.builder()
+        return Stats.builder()
                         .level(0)
                         .experiencePoints(0L)
                         .nextLevelAt(EXPERIENCE_FIRST_LEVEL) // general XP needed for level 1
@@ -54,8 +53,7 @@ public class StatsServiceImp implements StatsService{
                         .luckNextLevelAt(EXPERIENCE_FIRST_LEVEL)
 
                         .totalMissionsCompleted(0)
-                        .build()
-        );
+                        .build();
     }
 
 

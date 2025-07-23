@@ -8,6 +8,7 @@ import com.sparklecow.lootlife.models.user.CustomOAuth2User;
 import com.sparklecow.lootlife.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -27,6 +28,7 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityFilterConfig {
 
     private final JwtFilter jwtFilter;
@@ -45,6 +47,7 @@ public class SecurityFilterConfig {
                         .requestMatchers("/task/*").authenticated()
                         .requestMatchers("/login/oauth2/*").permitAll()
                         .requestMatchers("/oauth-success").permitAll()
+                        .requestMatchers("/auth/**", "/oauth2/**", "/login/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
@@ -57,8 +60,8 @@ public class SecurityFilterConfig {
                             CustomOAuth2User customUser = (CustomOAuth2User) authentication.getPrincipal();
                             User user = customUser.getUser();
                             String jwt = jwtUtils.generateToken(user);
-
-                            String redirectUrl = "http://localhost:4000/oauth-success?token=" + jwt;
+                            log.info("jwt {}", jwt);
+                            String redirectUrl = "http://localhost:4200/auth/oauth-success?token=" + jwt;
                             response.sendRedirect(redirectUrl);
                         })
                         .failureHandler((request, response, exception) -> {

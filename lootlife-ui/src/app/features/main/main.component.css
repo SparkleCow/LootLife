@@ -21,3 +21,30 @@
   font-size: 16px;
   color: #ffffff;
 }
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  padding: 5px 0;
+}
+
+.marquee-content {
+  display: flex;
+  gap: 5px;
+  animation: scroll-left 30s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee-content img {
+  height: 20px;
+  width: auto;
+  flex-shrink: 0;
+}

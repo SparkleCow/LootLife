@@ -13,6 +13,7 @@ import java.util.Map;
 public class CustomOAuth2User implements OAuth2User {
 
     private final OAuth2User delegate;
+
     @Getter
     private final User user;
 

@@ -33,14 +33,13 @@ export class LoginComponent {
     private _userService: UserService
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-
       const loginRequest: LoginRequest = {
         username: this.loginForm.value.username,
         password: this.loginForm.value.password
@@ -51,11 +50,15 @@ export class LoginComponent {
           this._authService.saveToken(response);
           this._userService.fetchUserInformation();
           this._missionService.$createMission().subscribe({
-            next: (mission) => {
-              console.log('Misión creada:', mission);
+            next: () => {
             },
             error: (err) => {
-              console.error('Error al crear misión:', err);
+              console.error('Error, mission could not be created: ', err);
+              // Try again
+              this._missionService.$createMission().subscribe({
+                next: () => console.log(',Mission created'),
+                error: (err) => console.error('Eror, mission could not be created after try again: ', err)
+              });
             }
           });
           setTimeout(() => {
@@ -63,13 +66,13 @@ export class LoginComponent {
           }, 400);
         },
         error: (error: any) => {
-          console.error('Error durante el inicio de sesión:', error.message);
-          alert('Error al iniciar sesión: ' + error.message);
+          console.error('Loggin error: ', error.message);
+          alert('Loggin error: ' + error.message);
         }
       });
 
     } else {
-      console.log('Formulario de login inválido');
+      console.log('Invalid forms');
       this.loginForm.markAllAsTouched();
       alert('Por favor, ingresa un usuario/email y contraseña válidos.');
     }

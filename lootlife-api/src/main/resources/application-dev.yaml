@@ -1,0 +1,71 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/lootlife
+    username: Postgres
+    password: Borman15
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: localhost
+    port: 1025
+    username: sparklecow
+    password: sparklecow
+    properties:
+      smtp:
+        trust: "*"
+      auth: true
+      starttls:
+        enable: true
+      connectiontimeout: 5000
+      timeout: 3000
+      writetimeput: 5000
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: <Google-Key-Id>
+            client-secret: <Google-Secret-Key>
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - read:user
+              - user:email
+
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://www.googleapis.com/oauth2/v4/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+
+application:
+  security:
+    jwt:
+      secret_key: ${SECRET_KEY}
+      expiration: 8640000
+  mailing:
+    activation-url: http://localhost:4200/activate-account
+  ia_agent:
+    spark: ${SPARK_AGENT_KEY}

@@ -4,6 +4,7 @@ import com.sparklecow.lootlife.config.jwt.JwtUtils;
 import com.sparklecow.lootlife.entities.Role;
 import com.sparklecow.lootlife.entities.Token;
 import com.sparklecow.lootlife.entities.User;
+import com.sparklecow.lootlife.exceptions.*;
 import com.sparklecow.lootlife.models.email.EmailTemplateName;
 import com.sparklecow.lootlife.models.role.RoleName;
 import com.sparklecow.lootlife.models.user.AuthenticationRequestDto;
@@ -52,13 +53,13 @@ public class AuthenticationServiceImp implements AuthenticationService, TokenAut
     public UserResponseDto registerUser(UserRequestDto userRequestDto) throws MessagingException {
 
         if (userRepository.existsByEmail(userRequestDto.email())) {
-            throw new RuntimeException("Ya existe un usuario con ese correo.");
+            throw new EmailAlreadyExistsException("Email already exists.");
         }
 
         User user = userMapper.userRequestDtoToUser(userRequestDto);
 
         Role userRole = roleRepository.findByRoleName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Rol USER no encontrado"));
+                .orElseThrow(() -> new RoleNotFoundException("Role USER not found"));
 
         user.setPassword(passwordEncoder.encode(userRequestDto.password()));
         user.setRoles(Set.of(userRole));
@@ -107,14 +108,14 @@ public class AuthenticationServiceImp implements AuthenticationService, TokenAut
     @Override
     @Transactional
     public void validateToken(String tokenCode) throws MessagingException {
-        Token token = tokenRepository.findByToken(tokenCode).orElseThrow(() -> new RuntimeException("Token not found"));
+        Token token = tokenRepository.findByToken(tokenCode).orElseThrow(() -> new TokenNotFoundException("Token not found"));
 
         if(token.getValidatedAt()!=null){
-            throw new RuntimeException("Token has been validated before");
+            throw new TokenAlreadyValidatedException("Token has been validated before");
         }
         if(token.getExpiresAt().isBefore(LocalDateTime.now())){
             sendValidation(token.getUser());
-            throw new RuntimeException("Token has expired");
+            throw new TokenExpiredException("Token has expired");
         }
         token.setValidatedAt(LocalDateTime.now());
         User user = token.getUser();

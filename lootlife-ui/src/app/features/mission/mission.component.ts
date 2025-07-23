@@ -47,13 +47,37 @@ export class MissionComponent implements OnInit{
     ngOnInit(): void {
       this._missionService.$getActiveMissions().subscribe({
         next: (missions: MissionResponseDto[]) => {
-          this.missions = missions;
           if (missions.length > 0) {
+            this.missions = missions;
             this.mission = missions[0];
+          } else {
+            this.createMissionFallback();
           }
         },
         error: (err) => {
           console.error('Error al obtener misiones activas:', err);
+          this.createMissionFallback();
+        }
+      });
+    }
+
+    private createMissionFallback(): void {
+      this._missionService.$createMission().subscribe({
+        next: () => {
+          this._missionService.$getActiveMissions().subscribe({
+            next: (missions: MissionResponseDto[]) => {
+              this.missions = missions;
+              if (missions.length > 0) {
+                this.mission = missions[0];
+              }
+            },
+            error: (err) => {
+              console.error('Error al obtener misiones luego de crear:', err);
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error creando misión:', err);
         }
       });
     }

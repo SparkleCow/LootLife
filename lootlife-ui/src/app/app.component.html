@@ -2,8 +2,8 @@
   <aside class="menu">
     <h2 class="menu-title">Bienvenido a <b class="title">LootLife</b></h2>
     <p class="menu-subtitle">Gamifica tu vida, completa tus metas</p>
-    <ul *ngIf="!isLogged" (click)="redirectAtMain()">
-      <img src="https://images.vexels.com/media/users/3/136189/isolated/preview/8aff3574eabda894d8f7484bf8e81a6e-icono-de-casa-casa-azul.png"/> Home
+    <ul (click)="redirectAtMain()">
+      <img src="https://idelides.xyz/backgrounds/beach%20gif.gif"/> Home
     </ul>
     <ul *ngIf="!isLogged" (click)="redirectAtLogin()">
       <img src="/login.gif"/> Loguearse

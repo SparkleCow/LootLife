@@ -5,6 +5,7 @@ import com.sparklecow.lootlife.models.user.CustomOAuth2User;
 import com.sparklecow.lootlife.repositories.UserRepository;
 import com.sparklecow.lootlife.services.stats.StatsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
@@ -36,6 +38,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String email = oauth2User.getAttribute("email");
         String username = oauth2User.getAttribute("login");
+        username = username+" GitHub";
 
         //Here we validate if the registrationId is Github.
         //TODO uses another registrationId such as Google or Facebook
@@ -81,6 +84,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setOauth2Provider(registrationId);
             user.setEnabled(true);
             user.setVerified(true);
+            log.info("The oauth user is {}", user.getUsername());
             userRepository.save(user);
         } else {
             user = User.builder()
@@ -93,6 +97,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .isVerified(true)
                     .stats(statsService.createStats())
                     .build();
+            log.info("The oauth user is {}", user.getUsername());
             userRepository.save(user);
         }
         //CustomOauth2User is a wrapper that contains oauth2User and user information.
