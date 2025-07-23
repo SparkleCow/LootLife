@@ -17,6 +17,8 @@ feel like playing a role-playing game
 
 - Spring Boot 3.4.5 → Application framework and dependency injection
 
+- Spring OAuth2 Client – External authentication integration (OAuth2).
+
 - PostgreSQL → Primary data persistence
 
 - Spring Data JPA → Object-relational mapping (ORM)
@@ -37,11 +39,25 @@ feel like playing a role-playing game
 
 - Maven → Dependency management and build tool
 
-- Angular
+- Angular 19.2.14
+  
+- TypeScript 5.5.2
+
+- Tailwind CSS 4.1.11
+
+## High-Level System Architecture
+
+
+<img width="1326" height="606" alt="image" src="https://github.com/user-attachments/assets/d93d777f-70c5-4c85-938b-00a96b80c1ce" />
+
 
 ## Core Entity Relationships
 
-![image](https://github.com/user-attachments/assets/13851ea6-f29d-442e-8653-d2bb47876785)
+<img width="991" height="903" alt="Captura de pantalla 2025-07-20 210648" src="https://github.com/user-attachments/assets/42c2f111-7977-4386-9823-b40851ddd45c" />
+
+## Backend Architecture
+
+<img width="1211" height="855" alt="image" src="https://github.com/user-attachments/assets/11b06aa4-f4f5-40b0-b622-795b6883eaeb" />
 
 ## Key Features
 ### Authentication System
