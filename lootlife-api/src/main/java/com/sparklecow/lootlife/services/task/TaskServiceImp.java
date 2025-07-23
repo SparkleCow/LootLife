@@ -5,6 +5,8 @@ import com.sparklecow.lootlife.entities.Task;
 import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.exceptions.ForbiddenActionException;
 import com.sparklecow.lootlife.exceptions.auth.UserNotFoundException;
+import com.sparklecow.lootlife.exceptions.task.TaskAlreadyCompletedException;
+import com.sparklecow.lootlife.exceptions.task.TaskExpiredException;
 import com.sparklecow.lootlife.exceptions.task.TaskNotFoundException;
 import com.sparklecow.lootlife.models.stats.StatType;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
@@ -19,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,20 +48,31 @@ public class TaskServiceImp implements TaskService {
 
     @Override
     public List<TaskResponseDto> findTaskByUser(User user) {
-        return taskRepository.findByUser(user).stream().map(taskMapper::toResponseDto).toList();
+        return taskRepository.findByUser(user).stream()
+                .map(x -> {
+                    verifyExpiredTask(x);
+                    return taskMapper.toResponseDto(x);
+                }).toList();
     }
 
     @Override
     public List<TaskResponseDto> findTaskByDifficulty(User user, TaskDifficulty taskDifficulty) {
-        return taskRepository.findByTaskDifficultyAndUser(taskDifficulty, user).stream().map(taskMapper::toResponseDto).toList();
+        return taskRepository.findByTaskDifficultyAndUser(taskDifficulty, user).stream().map(x -> {
+            verifyExpiredTask(x);
+            return taskMapper.toResponseDto(x);
+        }).toList();
     }
 
     @Override
     public TaskResponseDto findTaskByUserAndId(User user, Long id) {
         User persistentUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        Optional<Task> task = persistentUser.getTasks().stream().filter(x -> x.getId().equals(id)).findFirst();
-        return task.map(taskMapper::toResponseDto).orElseThrow(() -> new TaskNotFoundException("Task not found with id: "+id));
+
+        Task task = persistentUser.getTasks().stream().filter(x -> x.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: "+id));
+
+        verifyExpiredTask(task);
+        return taskMapper.toResponseDto(task);
     }
 
     @Override
@@ -74,6 +89,16 @@ public class TaskServiceImp implements TaskService {
     }
 
     @Override
+    public boolean verifyExpiredTask(Task task) {
+        if (task.getDeadline().isBefore(LocalDateTime.now())) {
+            task.setIsExpired(true);
+            taskRepository.save(task);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     @Transactional
     public void completeTask(User user, Long id) {
         Task task = taskRepository.findById(id)
@@ -85,6 +110,14 @@ public class TaskServiceImp implements TaskService {
 
         if (!task.getUser().getId().equals(userOpt.getId())) {
             throw new ForbiddenActionException("This user is not the owner of this task");
+        }
+
+        if(verifyExpiredTask(task)){
+            throw new TaskExpiredException("Task has expired");
+        }
+
+        if(Boolean.FALSE.equals(task.getIsActive())){
+            throw new TaskAlreadyCompletedException("Task has expired");
         }
 
         Stats userStats = userOpt.getStats();

@@ -38,7 +38,7 @@ export class TaskComponent implements OnInit{
       taskDifficulty: [null, Validators.required],
       statsCategories: [[], [Validators.required, Validators.maxLength(3)]],
       deadline: [null, Validators.required],
-      progressRequired: [null, [Validators.required, Validators.min(1)]]
+      progressRequired: [null, [Validators.required, Validators.min(1), Validators.max(30)]]
     });
   }
 

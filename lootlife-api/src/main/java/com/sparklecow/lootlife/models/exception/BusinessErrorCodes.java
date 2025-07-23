@@ -14,11 +14,11 @@ public enum BusinessErrorCodes {
     EMAIL_ALREADY_EXIST(400, HttpStatus.BAD_REQUEST, "Email already has been used "),
 
     BAD_CREDENTIALS(401, HttpStatus.UNAUTHORIZED, "Email / password is incorrect "),
-    TOKEN_EXPIRED(401, HttpStatus.UNAUTHORIZED, "Token expired "),
     TOKEN_INVALID(401, HttpStatus.UNAUTHORIZED, "Invalid token "),
 
     ACCOUNT_DISABLED(403, HttpStatus.FORBIDDEN, "User account is disabled "),
     ILLEGAL_OPERATION(403, HttpStatus.FORBIDDEN, "Illegal operation "),
+    TASK_ALREADY_COMPLETED(403, HttpStatus.FORBIDDEN, "Task has already been completed "),
 
     USER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Email / password is incorrect "),
     TOKEN_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Token not found "),
@@ -27,6 +27,9 @@ public enum BusinessErrorCodes {
     STATS_NOT_FOUND(404, HttpStatus.NOT_FOUND, "Stats not found "),
 
     METHOD_NOT_ALLOWED(405, HttpStatus.METHOD_NOT_ALLOWED, "Method not allowed "),
+
+    TOKEN_EXPIRED(410, HttpStatus.GONE, "Token expired "),
+    TASK_EXPIRED(410, HttpStatus.GONE, "Task expired "),
 
     ACCOUNT_LOCKED(423, HttpStatus.LOCKED, "User account is locked "),
 

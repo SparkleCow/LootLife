@@ -47,7 +47,25 @@ public class TaskControllerAdvice {
                         .build());
     }
 
+    @ExceptionHandler(TaskExpiredException.class)
+    public ResponseEntity<ExceptionResponse> handleAuthenticationException(TaskExpiredException e){
+        return ResponseEntity
+                .status(TASK_EXPIRED.getHttpStatus())
+                .body(ExceptionResponse.builder()
+                        .businessErrorCode(TASK_EXPIRED.getErrorCode())
+                        .businessErrorDescription(TASK_EXPIRED.getMessage() + " " +e.getMessage())
+                        .message(e.getMessage())
+                        .build());
+    }
 
-
-
+    @ExceptionHandler(TaskAlreadyCompletedException.class)
+    public ResponseEntity<ExceptionResponse> handleAuthenticationException(TaskAlreadyCompletedException e){
+        return ResponseEntity
+                .status(TASK_ALREADY_COMPLETED.getHttpStatus())
+                .body(ExceptionResponse.builder()
+                        .businessErrorCode(TASK_ALREADY_COMPLETED.getErrorCode())
+                        .businessErrorDescription(TASK_ALREADY_COMPLETED.getMessage() + " " +e.getMessage())
+                        .message(e.getMessage())
+                        .build());
+    }
 }

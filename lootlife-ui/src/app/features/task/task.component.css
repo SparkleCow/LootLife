@@ -1,4 +1,6 @@
 .tasks-container{
+  display: flex;
+  padding-top: 50px;
   box-sizing: border-box;
 }
 
@@ -10,6 +12,7 @@
   background-color: rgba(131, 33, 121, 0.95);
   border: 5px outset rgba(152, 44, 141, 0.95);
   font-size: 15px;
+  margin: 0px 30px;
 }
 
 .task-form label {
@@ -72,7 +75,7 @@
 }
 
 .stats-checkboxes label:hover {
-  background-color: #f0f0f0;
+  cursor: pointer;
 }
 
 .warning {
@@ -131,7 +134,106 @@ td{
   background-color: #45a049;
 }
 
+.expired-task{
+  opacity: 0.5;
+  background-color: #4592a0;
+}
+
 td button{
   margin-right: 5px;
   cursor: pointer;
+}
+
+
+
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Fijamos estructura pero permitimos crecimiento interno */
+}
+
+.task-table th,
+.task-table td {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  white-space: normal; /* Permite salto de línea */
+  word-wrap: break-word;
+  font-size: 15px;
+}
+
+.task-table th {
+  background-color: rgba(152, 44, 141, 1);
+  font-weight: bold;
+  text-align: left;
+}
+
+.task-table td {
+  max-width: 400px;
+}
+
+.task-table-container {
+  overflow-x: auto;
+  padding: 10px;
+  background-color: rgba(131, 33, 121, 0.98);
+  border: 5px outset rgba(152, 44, 141, 1);
+}
+
+.task-cards-container {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  .tasks-container{
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 50px;
+    padding: 50px 0px;
+    box-sizing: border-box;
+  }
+  /* En móvil, ocultar la tabla */
+  .task-table-container {
+    display: none;
+  }
+
+  /* Mostrar tarjetas */
+  .task-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .task-card {
+    background-color: #80186a;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    border: 1px solid #ffffff33;
+  }
+
+  .task-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+    color: #a5e9f0;
+  }
+
+  .task-card p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+  }
+
+  .task-card .actions {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .task-card button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
 }

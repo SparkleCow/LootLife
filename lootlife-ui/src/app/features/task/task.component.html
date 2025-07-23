@@ -11,9 +11,9 @@
       <label for="taskDifficulty">Dificultad</label>
       <select id="taskDifficulty" formControlName="taskDifficulty" required>
         <option value="">-- Selecciona dificultad --</option>
-        <option value="EASY">Fácil 🐔</option>
-        <option value="MEDIUM">Media</option>
-        <option value="HARD">Difícil</option>
+        <option value="EASY">Fácil 🐤</option>
+        <option value="MEDIUM">Media 🐔</option>
+        <option value="HARD">Difícil 👺</option>
         <option value="EXTREME">Extremo 💀</option>
       </select>
 
@@ -42,7 +42,7 @@
       <input type="datetime-local" id="deadline" formControlName="deadline" required>
 
       <label for="progressRequired">Progreso requerido</label>
-      <input type="number" id="progressRequired" formControlName="progressRequired" min="1" required>
+      <input type="number" id="progressRequired" formControlName="progressRequired" min="1" max="30" required>
 
       <button type="submit">Agregar tarea</button>
     </form>
@@ -57,20 +57,20 @@
         <th>Dificultad</th>
         <th>Deadline</th>
         <th>Progreso</th>
-        <th>Categorias</th>
         <th>Acciones</th>
       </tr>
-
       <tbody>
         @for(task of userTasks; track task.id){
-          <tr [ngClass]="{ 'completed-row': !task.isActive }">
+          <tr [ngClass]="{
+            'completed-row': !task.isActive,
+            'expired-task': task.isExpired
+          }">
             <td>{{task.title}}</td>
             <td>{{task.description}}</td>
             <td>{{task.xpReward}}</td>
             <td>{{task.taskDifficulty}}</td>
             <td>{{task.deadline}}</td>
             <td>{{task.progressRequired}}</td>
-            <td>{{task.statsCategories}}</td>
             <td>
               <button (click)="completeTask(task.id)">✅</button>
               <button (click)="deleteTask(task.id)">❌</button>
@@ -79,5 +79,20 @@
         }
       </tbody>
     </table>
+  </div>
+
+  <div class="task-cards-container">
+    <div class="task-card" *ngFor="let task of userTasks">
+      <h3>{{task.title}}</h3>
+      <p><b>Descripción:</b> {{task.description}}</p>
+      <p><b>Recompensa:</b> {{task.xpReward}}</p>
+      <p><b>Dificultad:</b> {{task.taskDifficulty}}</p>
+      <p><b>Deadline:</b> {{task.deadline}}</p>
+      <p><b>Progreso:</b> {{task.progressRequired}}</p>
+      <div class="actions">
+        <button (click)="completeTask(task.id)">✅</button>
+        <button (click)="deleteTask(task.id)">❌</button>
+      </div>
+    </div>
   </div>
 </div>

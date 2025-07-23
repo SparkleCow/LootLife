@@ -1,5 +1,6 @@
 package com.sparklecow.lootlife.services.task;
 
+import com.sparklecow.lootlife.entities.Task;
 import com.sparklecow.lootlife.entities.User;
 import com.sparklecow.lootlife.models.task.TaskDifficulty;
 import com.sparklecow.lootlife.models.task.TaskRequestDto;
@@ -14,6 +15,7 @@ public interface TaskService {
     List<TaskResponseDto> findTaskByDifficulty(User user, TaskDifficulty taskDifficulty);
     TaskResponseDto findTaskByUserAndId(User user, Long id);
     TaskResponseDto updateTask(User user, Long id, TaskUpdateDto taskUpdateDto);
+    boolean verifyExpiredTask(Task task);
     void completeTask(User user, Long id);
     void deleteTask(User user, Long id);
 }
