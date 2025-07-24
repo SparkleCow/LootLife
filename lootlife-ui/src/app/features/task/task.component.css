@@ -48,7 +48,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-width: 300px;
+  width: 100%;
 }
 
 .stat-checkbox{
@@ -131,12 +131,12 @@ td{
 
 .completed-row{
   opacity: 0.5;
-  background-color: #45a049;
+  background-color: #56eb39;
 }
 
 .expired-task{
   opacity: 0.5;
-  background-color: #4592a0;
+  background-color: #cf3535;
 }
 
 td button{
@@ -149,7 +149,7 @@ td button{
 .task-table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Fijamos estructura pero permitimos crecimiento interno */
+  table-layout: fixed;
 }
 
 .task-table th,
@@ -157,7 +157,7 @@ td button{
   padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: white;
-  white-space: normal; /* Permite salto de línea */
+  white-space: normal;
   word-wrap: break-word;
   font-size: 15px;
 }
@@ -197,6 +197,7 @@ td button{
     display: none;
   }
 
+
   /* Mostrar tarjetas */
   .task-cards-container {
     display: flex;
@@ -210,7 +211,7 @@ td button{
     border-radius: 8px;
     color: white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    border: 1px solid #ffffff33;
+    border: 5px outset rgba(152, 44, 141, 0.95);
   }
 
   .task-card h3 {

@@ -1,0 +1,12 @@
+<div class="verify-container">
+  <h2>🔐 Verificación de cuenta</h2>
+  <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
+    <label for="token">Pega tu código de verificación:</label>
+    <input type="text" id="token" formControlName="token" placeholder="Ej: 145324" />
+    <button type="submit">Verificar</button>
+  </form>
+
+  <div *ngIf="message" [ngClass]="{ 'success': isSuccess, 'error': isSuccess === false }">
+    {{ message }}
+  </div>
+</div>

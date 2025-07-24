@@ -10,6 +10,7 @@ import com.sparklecow.lootlife.services.user.TokenAuthenticationService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
 
     private final AuthenticationService authenticationService;
@@ -38,6 +40,7 @@ public class AuthController {
 
     @PostMapping("/validate-token")
     public ResponseEntity<?> validateToken(@RequestBody @Valid TokenValidationRequest request) {
+        log.info("Token {}", request);
         try {
             tokenAuthenticationService.validateToken(request.token());
             return ResponseEntity.ok().build();

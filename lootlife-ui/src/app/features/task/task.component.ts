@@ -81,7 +81,7 @@ export class TaskComponent implements OnInit{
 
     const dto: TaskRequestDto = {
       ...this.taskForm.value,
-      deadline: this.convertToISOString(this.taskForm.value.deadline)
+      deadline: this.taskForm.value.deadline
     };
 
     console.log('DTO listo para backend:', dto);

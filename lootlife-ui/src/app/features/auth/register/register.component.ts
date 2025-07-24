@@ -52,30 +52,21 @@ export class RegisterComponent {
 
       console.log('Objeto UserRequest a enviar:', userRequest);
 
-      // Llama al servicio de autenticación para registrar el usuario
       this.authService.$registerUser(userRequest).subscribe({
         next: (response: AuthResponse) => {
-          // Si el registro es exitoso
           console.log('Registro exitoso:', response);
-          //this.authService.$saveToken(response.token); // Guarda el token si la respuesta lo incluye
-          alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
-          this.router.navigate(['/auth/login']); // Redirige al login
+          alert('¡Registro exitoso! Ingresa el código enviado a tu correo.');
+          this.router.navigate(['/auth/validation']);
         },
         error: (error: any) => {
-          // Si ocurre un error durante el registro
           console.error('Error durante el registro:', error.message);
-          // Muestra un mensaje de error al usuario
           alert('Error en el registro: ' + error.message);
         }
-        // complete: () => {
-        //   console.log('Petición de registro completada.');
-        // }
       });
 
     } else {
-      // El formulario es inválido, muestra un mensaje o resalta los errores
       console.log('Formulario de registro inválido.');
-      this.registerForm.markAllAsTouched(); // Para mostrar los mensajes de error en los campos
+      this.registerForm.markAllAsTouched();
       alert('Por favor, completa todos los campos correctamente.');
     }
   }

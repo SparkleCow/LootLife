@@ -175,7 +175,7 @@ ul:hover{
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1085px) {
   .home-container {
     flex-direction: column;
   }

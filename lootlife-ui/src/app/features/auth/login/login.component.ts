@@ -50,14 +50,12 @@ export class LoginComponent {
           this._authService.saveToken(response);
           this._userService.fetchUserInformation();
           this._missionService.$createMission().subscribe({
-            next: () => {
-            },
+            next: () => {},
             error: (err) => {
-              console.error('Error, mission could not be created: ', err);
-              // Try again
+              console.error('Error al crear la misión: ', err);
               this._missionService.$createMission().subscribe({
-                next: () => console.log(',Mission created'),
-                error: (err) => console.error('Eror, mission could not be created after try again: ', err)
+                next: () => console.log('Misión creada en segundo intento'),
+                error: (err) => console.error('Error al crear misión en segundo intento: ', err)
               });
             }
           });
@@ -66,13 +64,32 @@ export class LoginComponent {
           }, 400);
         },
         error: (error: any) => {
-          console.error('Loggin error: ', error.message);
-          alert('Loggin error: ' + error.message);
+          const status = error.status;
+          const response = error.error;
+
+          if (status === 0) {
+            alert('No se pudo conectar con el servidor. Verifica tu conexión a internet.');
+          } else if (status === 400) {
+            if (response?.validationErrors?.length) {
+              alert('Errores de validación:\n- ' + response.validationErrors.join('\n- '));
+            } else {
+              alert('Solicitud incorrecta. Verifica los campos ingresados.');
+            }
+          } else if (status === 401) {
+              alert('Usuario o contraseña incorrectos.');
+          } else if (status === 403) {
+            alert('Acceso denegado. No tienes permisos suficientes.');
+          } else if (status === 404) {
+            alert('No se encontró el recurso solicitado.');
+          } else if (status === 500) {
+            alert('Error interno del servidor. Intenta más tarde.');
+          } else {
+            alert(`Error inesperado: ${response?.message || error.message}`);
+          }
         }
       });
-
     } else {
-      console.log('Invalid forms');
+      console.log('Formulario inválido');
       this.loginForm.markAllAsTouched();
       alert('Por favor, ingresa un usuario/email y contraseña válidos.');
     }
