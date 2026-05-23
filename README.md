@@ -4,12 +4,21 @@ LootLife is a Spring Boot application that gamifies personal task management by 
 Users create and complete tasks to earn experience points across different character attributes, creating an engaging system that makes productivity 
 feel like playing a role-playing game
 
+<img width="1879" height="982" alt="image" src="https://github.com/user-attachments/assets/cce7b6a7-bef4-4bc9-8fb5-6127bc61c65b" />
+
 ## The system transforms traditional task management by introducing:
+
+<img width="1863" height="995" alt="image" src="https://github.com/user-attachments/assets/232f9278-2f1a-49ea-8325-603018003511" />
+<br><br>
 
 - Character Progression: Users gain levels and experience points
 - Attribute System: Seven different stats (Strength, Intelligence, Wisdom, Charisma, Dexterity, Constitution, Luck)
 - Task Difficulty Scaling: Tasks have different difficulty levels that affect XP rewards
 - Mission Completion Tracking: Comprehensive statistics on completed tasks
+
+<br>
+
+<img width="1878" height="1000" alt="image" src="https://github.com/user-attachments/assets/c235f8aa-9c78-4719-a2ef-fbe65b03370f" />
 
 ## Technologies Used in LootLife
 
@@ -101,13 +110,11 @@ Run npm install to download all the Node modules used in the project.
 Once the container is up and running, start the Spring and Angular services:
 Use mvn spring-boot:run for Spring and ng serve for Angular.
 
-## LootLife
-
-<img width="1879" height="982" alt="image" src="https://github.com/user-attachments/assets/cce7b6a7-bef4-4bc9-8fb5-6127bc61c65b" />
-<img width="1878" height="1000" alt="image" src="https://github.com/user-attachments/assets/c235f8aa-9c78-4719-a2ef-fbe65b03370f" />
 <img width="1868" height="997" alt="image" src="https://github.com/user-attachments/assets/61863f11-0dd5-499b-b4ed-89362f53e806" />
+
+## LootLife - IA
+
 <img width="1886" height="1003" alt="image" src="https://github.com/user-attachments/assets/d098cd5e-598e-49f3-8832-b1cadbf33827" />
-<img width="1863" height="995" alt="image" src="https://github.com/user-attachments/assets/232f9278-2f1a-49ea-8325-603018003511" />
 
 
 
